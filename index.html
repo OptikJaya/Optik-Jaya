@@ -479,7 +479,7 @@
                 alert('There was an error submitting the form. Please try again.');
             });
         }
-
+        //for manifest
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
