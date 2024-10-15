@@ -1,0 +1,22 @@
+{
+  "name": "Optik Jaya",  // Full app name
+  "short_name": "Optik",  // Shorter version for compact displays
+  "description": "A patient data form for Optik Jaya.",  // Brief description of the app
+  "start_url": "/",  // The URL the app should start at when launched
+  "display": "standalone",  // Makes the app look like a standalone app
+  "background_color": "#ffffff",  // Background color for the splash screen
+  "theme_color": "#2E7445",  // Color of the navigation bar and status bar
+  "orientation": "portrait",  // Locks the app to portrait orientation
+  "icons": [
+    {
+      "src": "path/to/icon-192.png",  // Icon for small devices (192x192 px)
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "path/to/icon-512.png",  // Icon for larger devices (512x512 px)
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
