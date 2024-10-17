@@ -5,7 +5,307 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Optik Jaya</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel=“stylesheet” type=“text/css” href=“styles.css”>
+    <style>
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2E7445, #2E7445);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 10px;
+            overflow: auto; /* Allow scrolling */
+            touch-action: manipulation;  /* Enable gestures like pinch and pan */
+        }
+
+        .form-container {
+            background-color: #ffffffb7;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh; /* Limit the height of the form */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+            h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto 20px; /* Center the logo and add margin below */
+            max-width: 40%; /* Ensure the logo is responsive */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        .collapsible {
+            background-color: #2E7445;
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 18px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .collapsible:hover {
+            background-color: #194d2a;
+        }
+
+        .collapsible:after {
+            content: '\002B'; /* Add plus symbol */
+            color: white;
+            float: right;
+        }
+
+        .collapsible.active:after {
+            content: "\2212"; /* Add minus symbol when expanded */
+        }
+
+        .content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: #f1f1f1;
+            padding: 0 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 2px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            color: #333;
+            background-color: #f9f9f9;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            border-color: #2E7445;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(116, 235, 213, 0.5);
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #2E7445;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #194d2a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        .checkbox-group {
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group label {
+            display: block;
+            font-weight: normal;
+        }
+
+        .table-container {
+            max-height: 400px;         /* Limit vertical height */
+            overflow-y: auto;          /* Enable vertical scrolling */
+            overflow-x: auto;          /* Enable horizontal scrolling */
+            border: 1px solid #ccc;    /* Optional: Add a border for visibility */
+            display: block;             /* Make sure the container is a block element */
+            width: 100%;                /* Make the container take up the full width */
+            box-sizing: border-box;     /* Include padding and border in width/height */
+            white-space: nowrap;        /* Prevent the table from wrapping inside the container */
+        }
+
+        table {
+            width: 100%;                /* Set table width to 100% for responsiveness */
+            min-width: 600px;           /* Set a minimum width to prevent it from being too narrow */
+            table-layout: auto;         /* Allow auto layout for better cell sizing */
+            border-collapse: collapse;  /* Avoid overlapping borders */
+        }
+
+        th, td {
+            white-space: nowrap;        /* Prevent text wrapping in cells */
+            overflow: hidden;           /* Hide overflowed content */
+            padding: 12px;              /* Increased padding for better readability */
+            border: 1px solid #ccc;     /* Table borders */
+            text-align: center;         /* Center-align text inside cells */
+            font-size: 14px;            /* Adjust font size for readability */
+        }
+
+        th {
+            background-color: #2E7445; /* Header background color */
+            color: white;               /* Header text color */
+            font-weight: bold;          /* Make header text bold */
+        }
+
+        td {
+            background-color: #f9f9f9; /* Alternate background for cells */
+            transition: background-color 0.3s; /* Transition for hover effects */
+        }
+
+        td:hover {
+            background-color: #e1e1e1; /* Light grey background on hover */
+        }
+
+        /* Sticky Left Column */
+        th:first-child, td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 1;                 /* Ensure the leftmost column stays on top */
+        }
+
+        @media screen and (orientation: landscape) {
+            .form-container, .table-container {
+                max-width: 80%;            /* Set max width for landscape mode */
+                width: 100%;               /* Allow full width for the container */
+                padding: 20px;             /* Optional: Adjust padding for aesthetics */
+            }
+        }
+
+        /* Media Query for Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .table-container {
+                width: 100%;            /* Ensure the container takes up the full width */
+                overflow-x: auto;       /* Enable horizontal scrolling on smaller screens */
+                padding: 0 10px;        /* Add padding for better readability */
+            }
+
+            table {
+                width: max-content;     /* Allow table to take up the maximum content width */
+                min-width: 100%;       /* Ensure a minimum width */
+            }
+
+            th, td {
+                white-space: nowrap;    /* Prevent wrapping of text in small screens */
+                font-size: 12px;        /* Smaller font size for better fitting */
+            }
+        
+
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead {
+                display: none;         /* Hide table headers on smaller screens */
+            }
+
+            td {
+                text-align: left;
+                padding-left: 50%;
+                position: relative;
+            }
+
+            td:before {
+                content: attr(data-label); /* Add labels for mobile-friendly display */
+                position: absolute;
+                left: 10px;
+                font-weight: bold;
+            }
+
+            td input[type="text"] {
+                width: 100%;           /* Make input fields responsive */
+                padding: 8px;
+                box-sizing: border-box;
+            }
+        }
+        
+        th:first-child, td:first-child {
+            position: sticky;
+            left: 0;
+            background-color: #f1f1f1; /* Keep the leftmost column visible with a background */
+            z-index: 1;  /* Ensure the leftmost column stays on top */
+        }
+
+
+        .menu-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #2E7445;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .menu-btn:hover {
+            background-color: #194d2a;
+            transform: translateY(-2px);
+        }
+
+        .back-btn {
+            position: absolute;  /* Allow for positioning relative to the nearest positioned ancestor */
+            top: 20px;           /* Distance from the top of the container */
+            left: 20px;          /* Distance from the left of the container */
+            background-color: #8a0c0c; /* Background color for the button */
+            color: rgb(255, 255, 255);        /* Text color */
+            border: none;        /* Remove default border */
+            border-radius: 8px;  /* Rounded corners */
+            padding: 10px;       /* Padding for the button */
+            cursor: pointer;     /* Pointer cursor on hover */
+        }
+
+        
+        
+    </style>
 </head>
 <body>
      <!-- Login Form -->
@@ -25,15 +325,26 @@
             <input type="submit" value="Login">
         </form>
     </div>
-    
+   
     <div id="menu-container" class="form-container" style="display: none;">
         <h2>Menu</h2>
         <button id="fill-form-btn" class="menu-btn">Isi Formulir</button>
         <button id="show-data-btn" class="menu-btn">Tampilkan Data Google Sheet</button>
     </div>
-
+    
+    <div id="data-view-container" class="form-container" style="display: none;">
+        <button id="back-to-data-btn" class="back-btn">Kembali</button> <!-- Changed ID -->
+        <h2>Data Pasien Optik Jaya</h2>
+        
+        <input type="text" id="search-input" placeholder="Cari data..." oninput="searchData()" style="margin-bottom: 20px; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
+        
+        <div class="table-container" id="table-container">
+            <!-- The table will be inserted here dynamically -->
+        </div>
+    </div>
+    
     <div id="form-container" class="form-container" style="display: none;">
-        <button id="back-to-menu-btn" class="back-btn">Kembali</button>
+        <button id="back-to-menu-btn" class="back-btn">Kembali</button> <!-- Keep this ID -->
         <!-- User Info Section in the Top Right -->
         <div id="user-info-container" style="position: absolute; top: 20px; right: 20px;">
             <button id="user-info-btn" style="background-color: #2E7445; color: white; border: none; border-radius: 8px; padding: 10px 15px; cursor: pointer;">
@@ -71,7 +382,7 @@
 
                 <div class="form-group">
                     <label for="phone">HP:</label>
-                    <input type="tel" id="phone" name="HP" pattern="[0-9]{12,13}" placeholder="1234567890" required>
+                    <input type="tel" id="phone" name="HP" pattern="[0-9]{11,12,13}" placeholder="081325465984" required>
                 </div>
 
                 <div class="field">
@@ -88,7 +399,7 @@
 
                 <div class="form-group">
                     <label for="coordinates">Koordinat Maps:</label>
-                    <input type="text" id="coordinates" name="Koordinat" placeholder="e.g. -6.200000, 106.816666" required>
+                    <input type="text" id="coordinates" name="Koordinat" placeholder="e.g. -6.200000, 106.816666" >
                 </div>
             </div>
 
@@ -319,27 +630,34 @@
             document.getElementById('form-container').style.display = 'block';
         });
 
+        // Event listener for the show data button
+        document.getElementById('show-data-btn').addEventListener('click', function() {
+            document.getElementById('menu-container').style.display = 'none'; // Hide the menu
+            fetchSheetData(); // Call the function to fetch data and display it
+        });
+
         // Fetch user-specific data from Google Sheets
         function fetchSheetData() {
-            const sheetId = '1-Appfrc9S7RzJZO5aq4oxn73FtaOregvL3vOzpGJf6M';  // Your Google Sheet ID
-            const apiKey = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0';    // Your API key
+            const sheetId = '1-Appfrc9S7RzJZO5aq4oxn73FtaOregvL3vOzpGJf6M'; // Your Google Sheet ID
+            const apiKey = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0'; // Your API key
             const loggedInUser = localStorage.getItem('username'); // Get the logged-in user's username
 
-            const sheetRange = `${loggedInUser}!A1:D`; // Use the username to access the corresponding tab
+            const sheetRanges = [`${loggedInUser}!A1:Z100`]; // Ensure the username is the correct sheet name
+            const rangesQuery = sheetRanges.map(range => `ranges=${encodeURIComponent(range)}`).join('&');
 
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetRange}?key=${apiKey}`;
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values:batchGet?${rangesQuery}&key=${apiKey}`;
 
             fetch(url)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        throw new Error(`Network response was not ok: ${response.statusText}`);
                     }
                     return response.json();
                 })
                 .then(data => {
-                    console.log(data); // Log the entire response for debugging
-                    if (data.values && data.values.length > 0) {
-                        displayUserData(data.values); // Display the data for the user
+                    if (data.valueRanges && data.valueRanges[0].values && data.valueRanges[0].values.length > 0) {
+                        displayUserData(data.valueRanges[0].values); // Call the function to display data
+                        document.getElementById('data-view-container').style.display = 'block'; // Show the data view container
                     } else {
                         alert('No data found for this user.');
                     }
@@ -350,45 +668,56 @@
                 });
         }
 
-        // Display the fetched data in a table format
+        // Function to display user data
         function displayUserData(data) {
-            const sheetContainer = document.createElement('div');  // New container for Google Sheet data
-            sheetContainer.id = 'sheet-container';  // Set an ID so we can hide it later
+            const tableContainer = document.getElementById('table-container');
+            tableContainer.innerHTML = ''; // Clear previous content
 
-            let tableHtml = '<table border="1">';
-            data.forEach(row => {
+            // Create the table
+            let tableHtml = '<table border="1"><thead><tr>';
+            const headers = data[0]; // First row should contain headers
+            headers.forEach(header => {
+                tableHtml += `<th>${header}</th>`;
+            });
+            tableHtml += '</tr></thead><tbody>';
+
+            // Create table rows for the remaining data
+            data.slice(1).forEach(row => {
                 tableHtml += '<tr>';
                 row.forEach(cell => {
-                    tableHtml += `<td>${cell}</td>`;
+                    tableHtml += `<td>${cell || ''}</td>`; // Handle empty cells gracefully
                 });
                 tableHtml += '</tr>';
             });
-            tableHtml += '</table>';
 
-            // Create a Back button
-            const backButton = document.createElement('button');
-            backButton.innerText = 'Kembali';
-            backButton.classList.add('back-btn');
-
-            // Event listener for Back button
-            backButton.addEventListener('click', function() {
-                sheetContainer.style.display = 'none';  // Hide the sheet data container
-                document.getElementById('menu-container').style.display = 'block';  // Show the menu
-            });
-
-            sheetContainer.innerHTML = tableHtml;
-            sheetContainer.appendChild(backButton);
-
-            // Hide the menu and form container when displaying the sheet data
-            document.getElementById('menu-container').style.display = 'none';
-            document.body.appendChild(sheetContainer);  // Add the new sheet data container to the body
+            tableHtml += '</tbody></table>';
+            tableContainer.innerHTML = tableHtml; // Insert the table into the container
         }
 
-        // Event listeners for menu buttons
-        document.getElementById('show-data-btn').addEventListener('click', function() {
-            document.getElementById('menu-container').style.display = 'none';
-            fetchSheetData(); // Call the correct function to fetch data
+
+        // Search function
+        function searchData() {
+            const input = document.getElementById('search-input').value.toLowerCase();
+            const table = document.querySelector('#table-container table');
+            const rows = table.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const rowText = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(' '); // Join cell text
+                if (rowText.includes(input)) {
+                    row.style.display = ''; // Show row
+                } else {
+                    row.style.display = 'none'; // Hide row
+                }
+            });
+        }
+
+        // Back button for data view
+        document.getElementById('back-to-data-btn').addEventListener('click', function() {
+            document.getElementById('data-view-container').style.display = 'none'; 
+            document.getElementById('menu-container').style.display = 'block'; 
         });
+
 
 
         // Toggle Password Visibility
@@ -495,16 +824,56 @@
         });
 
 
-        //for manifest
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }, function(error) {
-                    console.log('ServiceWorker registration failed: ', error);
-                });
-            });
-        }
+            const tableContainer = document.querySelector('.table-container');
+            let scale = 1;  // Initial zoom scale
+
+            // Handle zoom event
+            function zoom(event) {
+                event.preventDefault();
+                if (event.ctrlKey) {  // Zoom when Ctrl is held (for desktop)
+                    scale += event.deltaY * -0.01;  // Adjust zoom scale
+                    scale = Math.min(Math.max(0.5, scale), 3);  // Limit zoom level between 50% and 300%
+                    
+                    tableContainer.style.transform = `scale(${scale})`;  // Apply zoom scale
+                    tableContainer.style.transformOrigin = '0 0';  // Keep origin at top-left
+                    tableContainer.scrollLeft = 0;  // Reset horizontal scroll to 0 after zoom
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+            const tableContainer = document.querySelector('.table-container');
+            const table = tableContainer.querySelector('table');
+
+            // Check if table exists before trying to access its properties
+            if (table) {
+                // Adjust table width based on container width
+                if (table.offsetWidth > window.innerWidth) {
+                    tableContainer.style.overflowX = 'auto'; // Enable horizontal scroll if overflow
+                } else {
+                    tableContainer.style.overflowX = 'hidden'; // Hide scroll if no overflow
+                }
+            } else {
+                console.error('Table not found in the container.'); // Log error if table is null
+            }
+        });
+
+        // Also, make sure to attach the resize event to adjust on window size change
+        window.addEventListener('resize', function() {
+            const tableContainer = document.querySelector('.table-container');
+            const table = tableContainer.querySelector('table');
+
+            if (table) {
+                // Adjust table width based on container width
+                if (table.offsetWidth > window.innerWidth) {
+                    tableContainer.style.overflowX = 'auto'; // Enable horizontal scroll if overflow
+                } else {
+                    tableContainer.style.overflowX = 'hidden'; // Hide scroll if no overflow
+                }
+            }
+        });
+
+
+
         </script>
           
 </body>
