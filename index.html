@@ -218,12 +218,11 @@
             z-index: 1;                 /* Ensure the leftmost column stays on top */
         }
 
-        /* Media Query for Landscape Orientation */
-        @media (max-width: 768px) and (orientation: landscape) {
-            .table-container {
-                width: 60vw; /* Full width in landscape */
-                overflow-x: scroll; /* Horizontal scroll if needed */
-                padding: 0 15px;
+        @media only screen and (orientation: landscape) {
+            .form-container {
+                max-width: 80vw; /* Set the width based on viewport width */
+                max-height: 90vh; /* Adjust the max height */
+                background-color: #f0f0f0; /* Example of changing background color */
             }
         }
 
