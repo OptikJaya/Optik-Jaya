@@ -8,26 +8,24 @@
   "theme_color": "#2E7445",
   "screenshots": [
     {
-      "src": "Optik-Jaya/screenshot-wide.png",
+      "src": "/screenshot-wide.png",
       "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide"  
+      "type": "image/png" 
     },
     {
-      "src": "Optik-Jaya/screenshot-mobile.png",
+      "src": "/screenshot-mobile.png",
       "sizes": "640x1136",
-      "type": "image/png",
-      "form_factor": "narrow"  
+      "type": "image/png"
     }
   ],
   "icons": [
     {
-      "src": "Optik-Jaya/icon-192.png",
+      "src": "/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "Optik-Jaya/icon-512.png",
+      "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
