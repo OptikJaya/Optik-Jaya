@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Optik Jaya</title>
+    <base target="_top">
+    <link rel="manifest" href="manifest.json">
+    <script src="https://kit.fontawesome.com/7c51dff027.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="manifest" href="files/manifest.json">
     <style>
         /* Base Styles */
         * {
@@ -14,6 +16,7 @@
             padding: 0;
             font-family: 'Poppins', sans-serif;
         }
+        
 
         body {
             background: linear-gradient(135deg, #2E7445, #2E7445);
@@ -31,10 +34,15 @@
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             padding: 30px;
-            max-width: 500px;
+            max-width: 70vh;
             width: 100%;
             max-height: 90vh; /* Limit the height of the form */
             overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        .view-data-container {
+            max-width: 90vw; /* Set a different width for this specific container */
+            background-color: #e0e0e0; /* Different background if needed */
         }
 
             h2 {
@@ -47,8 +55,8 @@
         .logo {
             display: block;
             margin: 0 auto 20px; /* Center the logo and add margin below */
-            max-width: 40%; /* Ensure the logo is responsive */
-            height: auto; /* Maintain aspect ratio */
+            max-width: 15vh; /* Ensure the logo is responsive */
+            height: 15vh; /* Maintain aspect ratio */
         }
 
         .collapsible {
@@ -96,7 +104,7 @@
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin: 15px;
             font-weight: 600;
             color: #555;
         }
@@ -166,7 +174,6 @@
             max-height: 400px;         /* Limit vertical height */
             overflow-y: auto;          /* Enable vertical scrolling */
             overflow-x: auto;          /* Enable horizontal scrolling */
-            border: 1px solid #ccc;    /* Optional: Add a border for visibility */
             display: block;             /* Make sure the container is a block element */
             width: 100%;                /* Make the container take up the full width */
             box-sizing: border-box;     /* Include padding and border in width/height */
@@ -175,16 +182,14 @@
 
         table {
             width: 100%;                /* Set table width to 100% for responsiveness */
-            min-width: 600px;           /* Set a minimum width to prevent it from being too narrow */
             table-layout: auto;         /* Allow auto layout for better cell sizing */
-            border-collapse: collapse;  /* Avoid overlapping borders */
+            
         }
 
         th, td {
             white-space: nowrap;        /* Prevent text wrapping in cells */
             overflow: hidden;           /* Hide overflowed content */
             padding: 12px;              /* Increased padding for better readability */
-            border: 1px solid #ccc;     /* Table borders */
             text-align: center;         /* Center-align text inside cells */
             font-size: 14px;            /* Adjust font size for readability */
         }
@@ -204,6 +209,8 @@
             background-color: #e1e1e1; /* Light grey background on hover */
         }
 
+        
+
         /* Sticky Left Column */
         th:first-child, td:first-child {
             position: sticky;
@@ -211,16 +218,8 @@
             z-index: 1;                 /* Ensure the leftmost column stays on top */
         }
 
-        @media screen and (orientation: landscape) {
-            .form-container, .table-container {
-                max-width: 80%;            /* Set max width for landscape mode */
-                width: 100%;               /* Allow full width for the container */
-                padding: 20px;             /* Optional: Adjust padding for aesthetics */
-            }
-        }
-
         /* Media Query for Mobile Responsiveness */
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
             .table-container {
                 width: 100%;            /* Ensure the container takes up the full width */
                 overflow-x: auto;       /* Enable horizontal scrolling on smaller screens */
@@ -236,19 +235,10 @@
                 white-space: nowrap;    /* Prevent wrapping of text in small screens */
                 font-size: 12px;        /* Smaller font size for better fitting */
             }
-        
-
-            table, thead, tbody, th, td, tr {
-                display: block;
-            }
-
-            thead {
-                display: none;         /* Hide table headers on smaller screens */
-            }
+            
 
             td {
                 text-align: left;
-                padding-left: 50%;
                 position: relative;
             }
 
@@ -269,9 +259,29 @@
         th:first-child, td:first-child {
             position: sticky;
             left: 0;
-            background-color: #f1f1f1; /* Keep the leftmost column visible with a background */
             z-index: 1;  /* Ensure the leftmost column stays on top */
         }
+
+        .refraksi-table {
+            width: 100%; /* Custom width for this table */
+            background-color: #f9f9f9; /* Different background */
+            text-align: left; /* Align text to the left */
+            font-size: 15px; /* Font size adjustment */
+        }
+
+        .refraksi-table th, .refraksi-table td {
+            padding: 10px; /* Adjust padding */
+        }
+
+        .refraksi-table th {
+            background-color: #ffffff;
+            color: #021005;
+        }
+
+        .refraksi-table td {
+            background-color: #ffffff; /* Different cell background for data */
+        }
+
 
 
         .menu-btn {
@@ -296,15 +306,98 @@
             position: absolute;  /* Allow for positioning relative to the nearest positioned ancestor */
             top: 20px;           /* Distance from the top of the container */
             left: 20px;          /* Distance from the left of the container */
-            background-color: #8a0c0c; /* Background color for the button */
-            color: rgb(255, 255, 255);        /* Text color */
-            border: none;        /* Remove default border */
-            border-radius: 8px;  /* Rounded corners */
-            padding: 10px;       /* Padding for the button */
-            cursor: pointer;     /* Pointer cursor on hover */
+            background-color:transparent; /* No background */
+            color: #ffffff; /* Icon color */
+            border: none; /* No border */
+            display: flex;
+            justify-content: center;   /* Center content horizontally */
+            align-items: center;       /* Center content vertically */
+            cursor: pointer; /* Pointer cursor on hover */
+            width: 150px; /* Width of the button */
+            height: 50px; /* Height of the button */
+        }
+        .back-btn i {
+            margin-right: 10px;
         }
 
-        
+        .back-btn:hover {
+            color: #aaa5a5; /* Change icon color on hover */
+        }
+            
+
+        /* Style for Back to Search button */
+        .back-btn-custom {
+            background-color: #2e7445;  /* Dark red */
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-top: 20px;
+            font-size: 16px;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .back-btn-custom:hover {
+            background-color: #164425;  /* Lighter red on hover */
+            transform: translateY(-2px);
+        }
+
+        /* Style for Reset Form button */
+        .reset-btn-custom {
+            background-color: #d3d3d3;  /* Light grey */
+            color: black;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .reset-btn-custom:hover {
+            background-color: #b0b0b0;  /* Slightly darker grey on hover */
+            transform: translateY(-2px);
+        }
+
+        /* Flex container to align buttons side by side */
+        .menu-container {
+            display: flex;            /* Enable flexbox for the container */
+            justify-content: center;  /* Center the buttons horizontally */
+            gap: 20px;                /* Space between each button */
+            flex-wrap: wrap;          /* Allow wrapping if the screen is too small */
+        }
+
+        /* Custom Menu Button Styling - Square Buttons */
+        .menu-btn-square {
+            background-color: #2E7445; /* Button background color */
+            color: white;
+            width: 150px;   /* Fixed width to make it square */
+            height: 150px;  /* Fixed height to make it square */
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px; /* Text size */
+            border: none;
+            display: flex;
+            flex-direction: column;  /* Stack icon and text vertically */
+            align-items: center;     /* Center icon and text vertically */
+            justify-content: center; /* Center icon and text horizontally */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-align: center;
+        }
+
+        /* Style for the icons */
+        .menu-btn-square i {
+            font-size: 30px;   /* Adjust icon size */
+            margin-bottom: 8px;  /* Space between icon and text */
+        }
+
+        .menu-btn-square:hover {
+            background-color: #194d2a; /* Darker background on hover */
+            transform: translateY(-2px); /* Slight raise effect on hover */
+        }
+
         
     </style>
 </head>
@@ -329,26 +422,50 @@
    
     <div id="menu-container" class="form-container" style="display: none;">
         <h2>Menu</h2>
-        <button id="fill-form-btn" class="menu-btn">Isi Formulir</button>
-        <button id="show-data-btn" class="menu-btn">Tampilkan Data Google Sheet</button>
+        <!-- Container for Menu Buttons -->
+        <div class="menu-container">
+            <button id="fill-form-btn" class="menu-btn-square">
+                <i class="fa-solid fa-file-pen"></i> Isi Formulir
+            </button>
+            <button id="show-data-btn" class="menu-btn-square">
+                <i class="fas fa-eye"></i> Tampilkan Data
+            </button>
+            <button id="edit-data-btn" class="menu-btn-square">
+                <i class="fas fa-edit"></i> Edit Data
+            </button>
+        </div>
+
     </div>
     
-    <div id="data-view-container" class="form-container" style="display: none;">
-        <button id="back-to-data-btn" class="back-btn">Kembali</button> <!-- Changed ID -->
+    <div id="data-view-container" class="form-container view-data-container" style="display: none;">
+        <button id="back-to-data-btn" class="back-btn">
+            <i class="fa-solid fa-circle-chevron-left fa-2x"></i>kembali
+        </button> 
         <h2>Data Pasien Optik Jaya</h2>
         
-        <input type="text" id="search-input" placeholder="Cari data..." oninput="searchData()" style="margin-bottom: 20px; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
+        <input type="text" id="search-view-input" placeholder="Cari data..." oninput="searchDataInView()"  style="margin-bottom: 20px; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
         
         <div class="table-container" id="table-container">
             <!-- The table will be inserted here dynamically -->
         </div>
     </div>
+
+    <div id="search-container" class="form-container" style="display: none;">
+        <h2>Search Data to Edit</h2>
+        <input type="text" id="search-edit-input" placeholder="Enter Name or ID" style="margin-bottom: 20px; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
+        <button id="search-btn" class="menu-btn">Search</button>
+        <button id="back-from-search-btn" class="back-btn">
+            <i class="fa-solid fa-circle-chevron-left fa-2x"></i>kembali
+        </button>
+    </div>
     
     <div id="form-container" class="form-container" style="display: none;">
-        <button id="back-to-menu-btn" class="back-btn">Kembali</button> <!-- Keep this ID -->
+        <button id="back-to-menu-btn" class="back-btn">
+            <i class="fa-solid fa-circle-chevron-left fa-2x"></i>kembali
+        </button>
         <!-- User Info Section in the Top Right -->
         <div id="user-info-container" style="position: absolute; top: 20px; right: 20px;">
-            <button id="user-info-btn" style="background-color: #2E7445; color: white; border: none; border-radius: 8px; padding: 10px 15px; cursor: pointer;">
+            <button id="user-info-btn" style="background-color: #ffffff; color: #2E7445; border: none; border-radius: 8px; padding: 10px 15px; cursor: pointer;">
                 <!-- Username will be inserted here dynamically -->
             </button>
             <div id="user-dropdown" style="display: none; background-color: white; border: 1px solid #ccc; padding: 10px; position: absolute; top: 40px; right: 0px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);">
@@ -361,7 +478,7 @@
         <img src="https://i.imgur.com/ciEloG8.png" alt="Logo" class="logo">  <!-- Add your logo URL here -->
         <h2>Data Pasien Optik Jaya</h2>
 
-        <form id="form" action="https://script.google.com/macros/s/AKfycbz5bTQoETiNwyYpyueNcFWmmSGATbHmXoXO_16YQ4265MzW55NkFM7RmfJkcnJgqk1j/exec" method="POST" onsubmit="submitForm(event)">
+        <form id="form" action="https://script.google.com/macros/s/AKfycby2xbI1Uv4BsnfpcB66zro-mkNJ66xQF21L1bCifcPtBUgdpfWbeYBLKzKdV-rL542m/exec" method="POST" onsubmit="submitForm(event)">
 
             <!-- Collapsible Section 1 - Data Diri Pelanggan -->
             <button type="button" class="collapsible">Data Diri Pelanggan</button>
@@ -444,54 +561,58 @@
                 <!-- Harga TT/Potongan -->
                 <div class="form-group">
                     <label for="harga-tt">Harga TT/Potongan:</label>
-                    <input type="number" id="harga-tt" name="harga-tt" required>
+                    <input type="number" id="harga-tt" name="harga tt" required>
                 </div>
 
                 <!-- Harga Akhir -->
                 <div class="form-group">
                     <label for="harga-akhir">Harga Akhir:</label>
-                    <input type="number" id="harga-akhir" name="harga-akhir" required>
+                    <input type="number" id="harga-akhir" name="harga akhir" required>
                 </div>
+
+                <div class="form-group">
+                    <label>Stok Lensa:</label>
+                    <div>
+                        <label><input type="radio" name="stok-lensa" value="ada" required> Ada</label>
+                        <label><input type="radio" name="stok-lensa" value="habis"> Habis</label>
+                    </div>
+                </div>
+                
             </div>
 
             <!-- Collapsible Section 3 - Status Refraksi -->
             <button type="button" class="collapsible">Status Refraksi</button>
             <div class="content">
-                <div class="form-group">
-                    <label>Status Refraksi:</label>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>SPH</th>
-                                <th>CYL</th>
-                                <th>AXIS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Kanan</td>
-                                <td><input type="text" name="sph-kanan" placeholder="SPH Kanan"></td>
-                                <td><input type="text" name="cyl-kanan" placeholder="CYL Kanan"></td>
-                                <td><input type="text" name="axis-kanan" placeholder="AXIS Kanan"></td>
-                                
-                            </tr>
-                            <tr>
-                                <td>Kiri</td>
-                                <td><input type="text" name="sph-kiri" placeholder="SPH Kiri"></td>
-                                <td><input type="text" name="cyl-kiri" placeholder="CYL Kiri"></td>
-                                <td><input type="text" name="axis-kiri" placeholder="AXIS Kiri"></td>
-                                
-                            </tr>
-                            <tr>
-                                <td>ADD</td>
-                                <td><input type="text" name="sph-add" placeholder="SPH ADD"></td>
-                                <td><input type="text" name="cyl-add" placeholder="CYL ADD"></td>
-                                <td><input type="text" name="axis-add" placeholder="AXIS ADD"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <table class="refraksi-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>SPH</th>
+                            <th>CYL</th>
+                            <th>AXIS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Kanan</td>
+                            <td><input type="text" name="sph kanan" placeholder="SPH Kanan"></td>
+                            <td><input type="text" name="cyl kanan" placeholder="CYL Kanan"></td>
+                            <td><input type="text" name="axis kanan" placeholder="AXIS Kanan"></td>
+                        </tr>
+                        <tr>
+                            <td>Kiri</td>
+                            <td><input type="text" name="sph kiri" placeholder="SPH Kiri"></td>
+                            <td><input type="text" name="cyl kiri" placeholder="CYL Kiri"></td>
+                            <td><input type="text" name="axis kiri" placeholder="AXIS Kiri"></td>
+                        </tr>
+                        <tr>
+                            <td>ADD</td>
+                            <td><input type="text" name="sph add" placeholder="SPH ADD"></td>
+                            <td><input type="text" name="cyl add" placeholder="CYL ADD"></td>
+                            <td><input type="text" name="axis add" placeholder="AXIS ADD"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <!-- Collapsible Section 4 - Kirim & Tagih -->
             <button type="button" class="collapsible">Kirim & Tagih</button>
@@ -502,30 +623,52 @@
                     <input type="number" id="dp" name="DP" required placeholder="Masukkan DP" step="any">
                 </div>
 
-                <!-- Tanggal Penagihan fields -->
+                <!-- Tanggal Penagihan and Bayar fields -->
                 <div class="form-group">
-                    <div class="penagihan-dates">
-                        <label for="tanggal-1">Penagihan 1:</label>
-                        <input type="date" id="tanggal-1" name="tanggal-1" required>
+                    <label for="tanggal-1">Pengiriman:</label>
+                    <input type="date" id="tanggal-1" name="tanggal-1" required>
 
-                        <label for="tanggal-2">Penagihan 2:</label>
-                        <input type="date" id="tanggal-2" name="tanggal-2" >
+                    <label for="tanggal-1">Bayar 1:</label> <!-- Date Field -->
+                    <input type="date" id="tanggal-bayar-1" name="tanggal-bayar-1" required>
 
-                        <label for="tanggal-3">Penagihan 3:</label>
-                        <input type="date" id="tanggal-3" name="tanggal-3" >
+                    <label for="bayar-1">Bayar 1 (IDR):</label> <!-- Currency Field -->
+                    <input type="number" id="bayar-1" name="bayar-1" required placeholder="Masukkan Bayar 1 (IDR)" step="any" min="0">
 
-                        <label for="tanggal-4">Penagihan 4:</label>
-                        <input type="date" id="tanggal-4" name="tanggal-4" >
+                    <label for="tanggal-2">Bayar 2:</label> <!-- Date Field -->
+                    <input type="date" id="tanggal-bayar-2" name="tanggal-bayar-2">
 
-                        <label for="tanggal-5">Penagihan 5:</label>
-                        <input type="date" id="tanggal-5" name="tanggal-5" >
+                    <label for="bayar-2">Bayar 2 (IDR):</label> <!-- Currency Field -->
+                    <input type="number" id="bayar-2" name="bayar-2" placeholder="Masukkan Bayar 2 (IDR)" step="any" min="0">
 
-                        <label for="tanggal-6">Penagihan 6:</label>
-                        <input type="date" id="tanggal-6" name="tanggal-6" >
+                    <label for="tanggal-3">Bayar 3:</label> <!-- Date Field -->
+                    <input type="date" id="tanggal-bayar-3" name="tanggal-bayar-3">
 
-                        <label for="tanggal-7">Penagihan 7:</label>
-                        <input type="date" id="tanggal-7" name="tanggal-7" >
-                    </div>
+                    <label for="bayar-3">Bayar 3 (IDR):</label> <!-- Currency Field -->
+                    <input type="number" id="bayar-3" name="bayar-3" placeholder="Masukkan Bayar 3 (IDR)" step="any" min="0">
+
+                    <label for="tanggal-4">Bayar 4:</label> <!-- Date Field -->
+                    <input type="date" id="tanggal-bayar-4" name="tanggal-bayar-4">
+
+                    <label for="bayar-4">Bayar 4 (IDR):</label> <!-- Currency Field -->
+                    <input type="number" id="bayar-4" name="bayar-4" placeholder="Masukkan Bayar 4 (IDR)" step="any" min="0">
+
+                    <label for="tanggal-5">Bayar 5:</label> <!-- Date Field -->
+                    <input type="date" id="tanggal-bayar-5" name="tanggal-bayar-5">
+
+                    <label for="bayar-5">Bayar 5 (IDR):</label> <!-- Currency Field -->
+                    <input type="number" id="bayar-5" name="bayar-5" placeholder="Masukkan Bayar 5 (IDR)" step="any" min="0">
+
+                    <label for="tanggal-6">Bayar 6:</label> <!-- Date Field -->
+                    <input type="date" id="tanggal-bayar-6" name="tanggal-bayar-6">
+
+                    <label for="bayar-6">Bayar 6 (IDR):</label> <!-- Currency Field -->
+                    <input type="number" id="bayar-6" name="bayar-6" placeholder="Masukkan Bayar 6 (IDR)" step="any" min="0">
+
+                    <label for="tanggal-7">Bayar 7:</label> <!-- Date Field -->
+                    <input type="date" id="tanggal-bayar-7" name="tanggal-bayar-7">
+
+                    <label for="bayar-7">Bayar 7 (IDR):</label> <!-- Currency Field -->
+                    <input type="number" id="bayar-7" name="bayar-7" placeholder="Masukkan Bayar 7 (IDR)" step="any" min="0">
                 </div>
             </div>
             
@@ -534,6 +677,8 @@
 
             <!-- Submit Button -->
             <input type="submit" value="Kirim Data" id="submit-button">
+            <button id="back-to-search-btn" class="back-btn-custom">Pencarian</button>
+            <button type="reset" id="reset-form-btn" class="reset-btn-custom">Reset Form</button>
         </form>
     </div>
 
@@ -552,6 +697,8 @@
                 const userInfoBtn = document.getElementById('user-info-btn'); // Reference the button
 
                 if (username) {
+                    const menuHeader = document.querySelector('#menu-container h2');
+                    menuHeader.textContent = 'Hai, ' + username + '!';
                     userInfoBtn.textContent = username;  // Update the button text with the username
                     document.getElementById('login-container').style.display = 'none'; // Hide the login form
                     document.getElementById('form-container').style.display = 'block';  // Show the main form
@@ -596,7 +743,7 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            // Fetch credentials from the Google Apps Script
+            // untuk ngambil username dan pw
             fetch('https://script.google.com/macros/s/AKfycbyd-FvnNJMC7pTNOOEeWgHBJmP4MRMNLOwi_fOwwcg9877m7pSGxgkv_qTgYaMu8FsT/exec')
                 .then(response => response.json())
                 .then(credentials => {
@@ -637,13 +784,15 @@
             fetchSheetData(); // Call the function to fetch data and display it
         });
 
+        
+
         // Fetch user-specific data from Google Sheets
         function fetchSheetData() {
             const sheetId = '1-Appfrc9S7RzJZO5aq4oxn73FtaOregvL3vOzpGJf6M'; // Your Google Sheet ID
             const apiKey = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0'; // Your API key
             const loggedInUser = localStorage.getItem('username'); // Get the logged-in user's username
 
-            const sheetRanges = [`${loggedInUser}!A1:Z100`]; // Ensure the username is the correct sheet name
+            const sheetRanges = [`${loggedInUser}!A1:AB100`]; // Ensure the username is the correct sheet name
             const rangesQuery = sheetRanges.map(range => `ranges=${encodeURIComponent(range)}`).join('&');
 
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values:batchGet?${rangesQuery}&key=${apiKey}`;
@@ -697,14 +846,14 @@
 
 
         // Search function
-        function searchData() {
-            const input = document.getElementById('search-input').value.toLowerCase();
+        function searchDataInView() {
+            const input = document.getElementById('search-view-input').value.toLowerCase();
             const table = document.querySelector('#table-container table');
             const rows = table.querySelectorAll('tbody tr');
 
             rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                const rowText = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(' '); // Join cell text
+        const cells = row.querySelectorAll('td');
+        const rowText = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(' '); // Join cell text
                 if (rowText.includes(input)) {
                     row.style.display = ''; // Show row
                 } else {
@@ -719,7 +868,197 @@
             document.getElementById('menu-container').style.display = 'block'; 
         });
 
+         // Event listener for the Edit Data button
+         document.getElementById('edit-data-btn').addEventListener('click', function () {
+            document.getElementById('menu-container').style.display = 'none'; // Hide the menu
+            document.getElementById('search-container').style.display = 'block'; // Show the search field
+        });
 
+        // Function to fetch data and allow editing
+        function fetchAndEditData() {
+            const sheetId = '1-Appfrc9S7RzJZO5aq4oxn73FtaOregvL3vOzpGJf6M';
+            const apiKey = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0';
+            const loggedInUser = localStorage.getItem('username');
+
+            // Fetch the user's data
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${loggedInUser}!A1:AB?key=${apiKey}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Pre-fill the form with existing data
+                    if (data.values && data.values.length > 1) {
+                        populateForm(data.values[1]); // Assuming the second row contains user data
+                        document.getElementById('form-container').style.display = 'block';
+                    } else {
+                        alert('No data found for this user.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    alert('Failed to load data.');
+                });
+        }
+
+       // Function to populate the form with fetched data and make prefilled fields read-only
+        function populateForm(userData) {
+            // Helper function to set value and readonly attribute if the field exists
+            function setFieldValue(id, value) {
+                const field = document.getElementById(id);
+                if (field) { // Check if the field exists
+                    field.value = value;
+                    if (value !== '') {
+                        field.setAttribute('readonly', true); // Make prefilled fields read-only
+                    } else {
+                        field.removeAttribute('readonly'); // Allow editing blank fields
+                    }
+                } else {
+                    console.error(`Element with id "${id}" not found.`);
+                }
+            }
+
+            // Data Diri Pelanggan
+            setFieldValue('name', userData[0]); // "Nama"
+            setFieldValue('address', userData[1]); // "Alamat"
+            setFieldValue('age', userData[2]); // "Umur"
+            setFieldValue('phone', userData[3]); // "HP"
+
+            // Status Pelanggan (Radio buttons - read-only handled separately)
+            const statusPelangganField = document.querySelector(`input[name="Status Pelanggan"][value="${userData[4]}"]`);
+            if (statusPelangganField) {
+                statusPelangganField.checked = true;
+                document.querySelectorAll('input[name="Status Pelanggan"]').forEach(input => input.disabled = true); // Disable the radio buttons
+            }
+
+            // Koordinat
+            setFieldValue('coordinates', userData[5]); // "Koordinat"
+
+            // Detail Pemesanan (Lensa)
+            const selectedLensa = userData[6].split(', ');
+            document.querySelectorAll('input[name="lensa"]').forEach(checkbox => {
+                checkbox.checked = selectedLensa.includes(checkbox.value);
+                checkbox.disabled = selectedLensa.includes(checkbox.value); // Disable prefilled checkboxes
+            });
+
+            setFieldValue('frame', userData[7]); // "Frame"
+            setFieldValue('harga-awal', userData[8]); // "Harga Awal"
+            setFieldValue('harga-tt', userData[9]); // "Harga TT"
+            setFieldValue('harga-akhir', userData[10]); // "Harga Akhir"
+
+            // Status Refraksi
+            setFieldValue('sph-kanan', userData[11]); // "SPH Kanan"
+            setFieldValue('cyl-kanan', userData[12]); // "CYL Kanan"
+            setFieldValue('axis-kanan', userData[13]); // "Axis Kanan"
+
+            setFieldValue('sph-kiri', userData[14]); // "SPH Kiri"
+            setFieldValue('cyl-kiri', userData[15]); // "CYL Kiri"
+            setFieldValue('axis-kiri', userData[16]); // "Axis Kiri"
+
+            setFieldValue('sph-add', userData[17]); // "SPH Add"
+            setFieldValue('cyl-add', userData[18]); // "CYL Add"
+            setFieldValue('axis-add', userData[19]); // "Axis Add"
+
+            // Kirim & Tagih
+            setFieldValue('dp', userData[20]); // "DP"
+
+            // Penagihan Dates and Bayar (IDR)
+            setFieldValue('tanggal-1', userData[21]); // "Bayar 1 Date"
+            setFieldValue('bayar-1', userData[22]); // "Bayar 1 (IDR)"
+
+            setFieldValue('tanggal-2', userData[23]); // "Bayar 2 Date"
+            setFieldValue('bayar-2', userData[24]); // "Bayar 2 (IDR)"
+
+            setFieldValue('tanggal-3', userData[25]); // "Bayar 3 Date"
+            setFieldValue('bayar-3', userData[26]); // "Bayar 3 (IDR)"
+
+            setFieldValue('tanggal-4', userData[27]); // "Bayar 4 Date"
+            setFieldValue('bayar-4', userData[28]); // "Bayar 4 (IDR)"
+
+            setFieldValue('tanggal-5', userData[29]); // "Bayar 5 Date"
+            setFieldValue('bayar-5', userData[30]); // "Bayar 5 (IDR)"
+
+            setFieldValue('tanggal-6', userData[31]); // "Bayar 6 Date"
+            setFieldValue('bayar-6', userData[32]); // "Bayar 6 (IDR)"
+
+            setFieldValue('tanggal-7', userData[33]); // "Bayar 7 Date"
+            setFieldValue('bayar-7', userData[34]); // "Bayar 7 (IDR)"
+        }
+
+        // Event listener for the search button in Edit Data
+        document.getElementById('search-btn').addEventListener('click', function() {
+            const query = document.getElementById('search-edit-input').value.trim(); // Use the updated input ID
+            if (query) {
+                searchDataToEdit(query); // Call the updated search function for Edit Data
+            } else {
+                alert('Please enter a search term.'); // Show alert if the input is empty
+            }
+        });
+
+        // Back button functionality for Search Data page
+        document.getElementById('back-from-search-btn').addEventListener('click', function() {
+            document.getElementById('search-container').style.display = 'none';  // Hide the search container
+            document.getElementById('menu-container').style.display = 'block';  // Show the menu container
+        });
+
+
+
+
+        document.getElementById('form-container').style.display = 'block'; // Show the form
+
+
+        function searchDataToEdit(query) {
+            const sheetId = '1-Appfrc9S7RzJZO5aq4oxn73FtaOregvL3vOzpGJf6M'; // Your Google Sheet ID
+            const apiKey = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0'; // Your API key
+
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/A1:AB?key=${apiKey}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.values && data.values.length > 1) {
+                        // Search for the query in the data (assuming the first column contains names or IDs)
+                        const matchingRow = data.values.find(row => row.includes(query));
+                        
+                        if (matchingRow) {
+                            populateForm(matchingRow); // Populate the form with the matching data
+                            document.getElementById('search-container').style.display = 'none'; // Hide the search container
+                            document.getElementById('form-container').style.display = 'block'; // Show the form
+                        } else {
+                            alert('No matching data found.');
+                        }
+                    } else {
+                        alert('No data found.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    alert('Failed to load data. Try again later.');
+                });
+        }
+
+
+        document.getElementById('back-to-search-btn').addEventListener('click', function() {
+            document.getElementById('form-container').style.display = 'none'; // Hide the form
+            document.getElementById('search-container').style.display = 'block'; // Show the search input
+            document.getElementById('form').reset(); // Optionally reset the form
+        });
+
+        // Modify the existing submitForm function to update data instead of inserting new data
+        function submitForm(event) {
+            event.preventDefault();
+
+            // Prepare the updated data to send
+            const form = document.getElementById('form');
+            const formData = new FormData(form);
+
+            // Send updated data back to Google Sheets
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.ok ? alert('Data updated successfully!') : alert('Error updating data'))
+            .catch(error => console.error('Error:', error));
+        }
 
         // Toggle Password Visibility
         document.getElementById('togglePassword').addEventListener('change', function() {
@@ -872,14 +1211,15 @@
                 }
             }
         });
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
-                .then(registration => {
-                    console.log('Service Worker registered with scope:', registration.scope);
+            navigator.serviceWorker.register('/service-worker.js')
+                .then((registration) => {
+                console.log('ServiceWorker registered: ', registration);
                 })
-                .catch(error => {
-                    console.error('Service Worker registration failed:', error);
+                .catch((registrationError) => {
+                console.log('ServiceWorker registration failed: ', registrationError);
                 });
             });
         }
