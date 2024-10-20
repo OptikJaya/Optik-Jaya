@@ -1,7 +1,7 @@
 {
   "name": "Optik Jaya",
   "short_name": "Optik Jaya",
-  "description": "An app for managing patient data.",
+  "description": "aplikasi optik jaya",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
