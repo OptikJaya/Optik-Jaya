@@ -462,7 +462,7 @@
 
     <div id="search-container" class="form-container" style="display: none;">
         <h2>Search Data to Edit</h2>
-        <input type="text" id="search-edit-input" placeholder="Enter Name or ID" style="margin-bottom: 20px; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
+        <input type="text" id="search-edit-input" placeholder="Masukkan Nama atau lainnya" style="margin-bottom: 20px; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
         <button id="search-btn" class="menu-btn">Search</button>
         <button id="back-from-search-btn" class="back-btn">
             <i class="fa-solid fa-circle-chevron-left fa-2x"></i>kembali
@@ -635,8 +635,8 @@
 
                 <!-- Tanggal Penagihan and Bayar fields -->
                 <div class="form-group">
-                    <label for="tanggal-1">Pengiriman:</label>
-                    <input type="date" id="tanggal-1" name="tanggal-1" required>
+                    <label for="Pengiriman">Pengiriman:</label>
+                    <input type="date" id="" name="Pengiriman" required>
 
                     <label for="tanggal-1">Bayar 1:</label> <!-- Date Field -->
                     <input type="date" id="tanggal-bayar-1" name="tanggal-bayar-1" required>
@@ -971,27 +971,34 @@
             // Kirim & Tagih
             setFieldValue('dp', userData[20]); // "DP"
 
-            // Penagihan Dates and Bayar (IDR)
-            setFieldValue('tanggal-1', userData[21]); // "Bayar 1 Date"
-            setFieldValue('bayar-1', userData[22]); // "Bayar 1 (IDR)"
+           // Add Pengiriman (this was missing)
+            setFieldValue('pengiriman', userData[21]); // Pengiriman
 
-            setFieldValue('tanggal-2', userData[23]); // "Bayar 2 Date"
-            setFieldValue('bayar-2', userData[24]); // "Bayar 2 (IDR)"
+            // Kirim & Tagih
+            setFieldValue('tanggal-1', userData[22]); // Bayar 1 Date
+            setFieldValue('bayar-1', userData[23]); // Bayar 1 (IDR)
 
-            setFieldValue('tanggal-3', userData[25]); // "Bayar 3 Date"
-            setFieldValue('bayar-3', userData[26]); // "Bayar 3 (IDR)"
+            setFieldValue('tanggal-2', userData[24]); // Bayar 2 Date
+            setFieldValue('bayar-2', userData[25]); // Bayar 2 (IDR)
 
-            setFieldValue('tanggal-4', userData[27]); // "Bayar 4 Date"
-            setFieldValue('bayar-4', userData[28]); // "Bayar 4 (IDR)"
+            setFieldValue('tanggal-3', userData[26]); // Bayar 3 Date
+            setFieldValue('bayar-3', userData[27]); // Bayar 3 (IDR)
 
-            setFieldValue('tanggal-5', userData[29]); // "Bayar 5 Date"
-            setFieldValue('bayar-5', userData[30]); // "Bayar 5 (IDR)"
+            setFieldValue('tanggal-4', userData[28]); // Bayar 4 Date
+            setFieldValue('bayar-4', userData[29]); // Bayar 4 (IDR)
 
-            setFieldValue('tanggal-6', userData[31]); // "Bayar 6 Date"
-            setFieldValue('bayar-6', userData[32]); // "Bayar 6 (IDR)"
+            setFieldValue('tanggal-5', userData[30]); // Bayar 5 Date
+            setFieldValue('bayar-5', userData[31]); // Bayar 5 (IDR)
 
-            setFieldValue('tanggal-7', userData[33]); // "Bayar 7 Date"
-            setFieldValue('bayar-7', userData[34]); // "Bayar 7 (IDR)"
+            setFieldValue('tanggal-6', userData[32]); // Bayar 6 Date
+            setFieldValue('bayar-6', userData[33]); // Bayar 6 (IDR)
+
+            setFieldValue('tanggal-7', userData[34]); // Bayar 7 Date
+            setFieldValue('bayar-7', userData[35]); // Bayar 7 (IDR)
+
+            // Add Stok Lensa (was missing)
+            setFieldValue('stok-lensa', userData[36]); // Stok Lensa
+
         }
 
         // Event listener for the search button in Edit Data
@@ -1010,9 +1017,6 @@
             document.getElementById('menu-container').style.display = 'block';  // Show the menu container
         });
 
-
-
-
         document.getElementById('form-container').style.display = 'block'; // Show the form
 
 
@@ -1020,14 +1024,20 @@
             const sheetId = '1-Appfrc9S7RzJZO5aq4oxn73FtaOregvL3vOzpGJf6M'; // Your Google Sheet ID
             const apiKey = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0'; // Your API key
 
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/A1:AB?key=${apiKey}`;
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/A1:AK?key=${apiKey}`;
 
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data.values);
                     if (data.values && data.values.length > 1) {
-                        // Search for the query in the data (assuming the first column contains names or IDs)
-                        const matchingRow = data.values.find(row => row.includes(query));
+                        // Convert query to lowercase for case-insensitive search
+                        const lowerQuery = query.toLowerCase();
+
+                        // Find matching row (assuming query could be found in any cell of the row)
+                        const matchingRow = data.values.find(row => 
+                            row.some(cell => cell.toLowerCase().includes(lowerQuery))
+                        );
                         
                         if (matchingRow) {
                             populateForm(matchingRow); // Populate the form with the matching data
@@ -1233,6 +1243,36 @@
                 });
             });
         }
+
+        function resetReadOnlyFields() {
+            // Find all input fields within the form
+            const fields = document.querySelectorAll('#form input');
+
+            // Iterate over each field and remove 'readonly' attribute
+            fields.forEach(field => {
+                field.removeAttribute('readonly'); // Remove 'readonly'
+                field.disabled = false; // Re-enable any disabled fields (e.g. radio buttons)
+            });
+
+            // Reset checkboxes (for fields like 'lensa')
+            const checkboxes = document.querySelectorAll('#form input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.disabled = false; // Re-enable checkboxes
+            });
+
+            // Reset radio buttons (for 'Status Pelanggan')
+            const radioButtons = document.querySelectorAll('input[name="Status Pelanggan"]');
+            radioButtons.forEach(radio => {
+                radio.disabled = false; // Re-enable radio buttons
+            });
+        }
+        document.getElementById('reset-form-btn').addEventListener('click', function() {
+            // Reset the form (this will clear all fields)
+            document.getElementById('form').reset();
+
+            // Remove read-only attributes
+            resetReadOnlyFields(); // Call the function to remove 'readonly' attributes
+        });
 
         </script>
           
