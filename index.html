@@ -802,7 +802,7 @@
             const apiKey = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0'; // Your API key
             const loggedInUser = localStorage.getItem('username'); // Get the logged-in user's username
 
-            const sheetRanges = [`${loggedInUser}!A1:AB100`]; // Ensure the username is the correct sheet name
+            const sheetRanges = [`${loggedInUser}!A1:AK`]; // Ensure the username is the correct sheet name
             const rangesQuery = sheetRanges.map(range => `ranges=${encodeURIComponent(range)}`).join('&');
 
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values:batchGet?${rangesQuery}&key=${apiKey}`;
@@ -891,7 +891,7 @@
             const loggedInUser = localStorage.getItem('username');
 
             // Fetch the user's data
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${loggedInUser}!A1:AB?key=${apiKey}`;
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${loggedInUser}!A1:AK?key=${apiKey}`;
 
             fetch(url)
                 .then(response => response.json())
