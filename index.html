@@ -469,6 +469,7 @@
         </button>
     </div>
     
+    
     <div id="form-container" class="form-container" style="display: none;">
         <button id="back-to-menu-btn" class="back-btn">
             <i class="fa-solid fa-circle-chevron-left fa-2x"></i>kembali
@@ -488,7 +489,7 @@
         <img src="https://i.imgur.com/ciEloG8.png" alt="Logo" class="logo">  <!-- Add your logo URL here -->
         <h2>Data Pasien Optik Jaya</h2>
 
-        <form id="form" action="https://script.google.com/macros/s/AKfycby2xbI1Uv4BsnfpcB66zro-mkNJ66xQF21L1bCifcPtBUgdpfWbeYBLKzKdV-rL542m/exec" method="POST" onsubmit="submitForm(event)">
+        <form id="form" action="https://script.google.com/macros/s/AKfycbyH2gEVSD-fZudcVxUe7MRz3E-N4v8fdcJWxlQoKIF3EegVRZMLjx_QsZGT1GRHvo8r/exec" method="POST" onsubmit="submitForm(event)">
 
             <!-- Collapsible Section 1 - Data Diri Pelanggan -->
             <button type="button" class="collapsible">Data Diri Pelanggan</button>
@@ -684,6 +685,8 @@
             
             <!-- Add the hidden input field here to store the username -->
             <input type="hidden" id="username-field" name="username" value="">
+
+            <input type="hidden" id="record-id" name="record-id" value="">
 
             <!-- Submit Button -->
             <input type="submit" value="Kirim Data" id="submit-button">
@@ -908,6 +911,21 @@
                     console.error('Error fetching data:', error);
                     alert('Failed to load data.');
                 });
+        }
+
+        function displaySearchResults(matchingRows) {
+        let resultsHtml = '';
+        matchingRows.forEach(row => {
+            resultsHtml += `<tr>
+            <td>${row[39]}</td> <!-- Record ID -->
+            <td>${row[1]}</td> <!-- Nama -->
+            <td>${row[2]}</td>
+            <td>${row[3]}</td> <!-- Alamat -->
+            <!-- Other fields -->
+            <td><button onclick="editRecord('${row[0]}')">Edit</button></td> <!-- Include record ID -->
+            </tr>`;
+        });
+        document.getElementById('search-results').innerHTML = resultsHtml;
         }
 
        // Function to populate the form with fetched data and make prefilled fields read-only
