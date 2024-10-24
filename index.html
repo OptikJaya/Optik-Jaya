@@ -1033,7 +1033,7 @@
             const sheetRanges = [`${loggedInUser}!A1:AK`]; // Ensure the username is the correct sheet name
             const rangesQuery = sheetRanges.map(range => `ranges=${encodeURIComponent(range)}`).join('&');
 
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values:batchGet?${rangesQuery}&key=${apiKey}`;
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${loggedInUser}!A1:AK?key=${apiKey}`;
 
             fetch(url)
                 .then(response => response.json())
