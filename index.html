@@ -1026,13 +1026,11 @@
 
 
         function searchDataToEdit(query) {
-            const sheetId = '1QZWhL4y-YLY47UKQwFm6OPiwhcS0ihY8HRG54HVDDh0'; // Your Google Sheet ID
-            const apiKey = 'AIzaSyDmXIJyYyiabogk7obXeB3XT852myYt5jg'; // Your API key
-            const loggedInUser = localStorage.getItem('username'); // Get the logged-in user's username
+            const sheetId = '1-Appfrc9S7RzJZO5aq4oxn73FtaOregvL3vOzpGJf6M';
+            const apiKey = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0';
+            const loggedInUser = localStorage.getItem('username');
 
-            const sheetRanges = [`${loggedInUser}!A1:AK`]; // Ensure the username is the correct sheet name
-            const rangesQuery = sheetRanges.map(range => `ranges=${encodeURIComponent(range)}`).join('&');
-
+            // Fetch the user's data
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${loggedInUser}!A1:AK?key=${apiKey}`;
 
             fetch(url)
