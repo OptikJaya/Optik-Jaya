@@ -754,7 +754,7 @@
             const password = document.getElementById('password').value;
 
             // untuk ngambil username dan pw
-            fetch('https://script.google.com/macros/s/AKfycbzm7T07qLjt-USIIfzviQEazIhefppahxe5mxwwoi0g_oWthezWJ5dX0T_dAGZcvjNjZQ/exec')
+            fetch('https://script.google.com/macros/s/AKfycbyd-FvnNJMC7pTNOOEeWgHBJmP4MRMNLOwi_fOwwcg9877m7pSGxgkv_qTgYaMu8FsT/exec')
                 .then(response => response.json())
                 .then(credentials => {
                     // Check if the credentials match
@@ -798,8 +798,8 @@
 
         // Fetch user-specific data from Google Sheets
         function fetchSheetData() {
-            const sheetId = '1QZWhL4y-YLY47UKQwFm6OPiwhcS0ihY8HRG54HVDDh0'; // Your Google Sheet ID
-            const apiKey = 'AIzaSyDmXIJyYyiabogk7obXeB3XT852myYt5jg'; // Your API key
+            const sheetId = '1-Appfrc9S7RzJZO5aq4oxn73FtaOregvL3vOzpGJf6M'; // Your Google Sheet ID
+            const apiKey = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0'; // Your API key
             const loggedInUser = localStorage.getItem('username'); // Get the logged-in user's username
 
             const sheetRanges = [`${loggedInUser}!A1:AK`]; // Ensure the username is the correct sheet name
@@ -886,8 +886,8 @@
 
         // Function to fetch data and allow editing
         function fetchAndEditData() {
-            const sheetId = '1QZWhL4y-YLY47UKQwFm6OPiwhcS0ihY8HRG54HVDDh0';
-            const apiKey = 'AIzaSyDmXIJyYyiabogk7obXeB3XT852myYt5jg';
+            const sheetId = '1-Appfrc9S7RzJZO5aq4oxn73FtaOregvL3vOzpGJf6M';
+            const apiKey = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0';
             const loggedInUser = localStorage.getItem('username');
 
             // Fetch the user's data
@@ -1023,8 +1023,12 @@
         function searchDataToEdit(query) {
             const sheetId = '1QZWhL4y-YLY47UKQwFm6OPiwhcS0ihY8HRG54HVDDh0'; // Your Google Sheet ID
             const apiKey = 'AIzaSyDmXIJyYyiabogk7obXeB3XT852myYt5jg'; // Your API key
+            const loggedInUser = localStorage.getItem('username'); // Get the logged-in user's username
 
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/A1:AK?key=${apiKey}`;
+            const sheetRanges = [`${loggedInUser}!A1:AK`]; // Ensure the username is the correct sheet name
+            const rangesQuery = sheetRanges.map(range => `ranges=${encodeURIComponent(range)}`).join('&');
+
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values:batchGet?${rangesQuery}&key=${apiKey}`;
 
             fetch(url)
                 .then(response => response.json())
