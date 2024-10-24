@@ -603,7 +603,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                         <tr>
                             <td>Kanan</td>
                             <td><input type="text" id="sph-kanan" name="sph kanan" placeholder="SPH Kanan"></td>
                             <td><input type="text" id="cyl-kanan" name="cyl kanan" placeholder="CYL Kanan"></td>
@@ -638,45 +638,46 @@
                     <label for="Pengiriman">Pengiriman:</label>
                     <input type="date" id="pengiriman" name="Pengiriman" required>
 
-                    <label for="tanggal-1">Bayar 1:</label>
+                    <label for="tanggal-1">Bayar 1:</label> <!-- Date Field -->
                     <input type="date" id="tanggal-1" name="tanggal-bayar-1" required>
 
                     <label for="bayar-1">Bayar 1 (IDR):</label> <!-- Currency Field -->
                     <input type="number" id="bayar-1" name="bayar-1" required placeholder="Masukkan Bayar 1 (IDR)" step="any" min="0">
 
-                    <label for="tanggal-2">Bayar 2:</label>
-                    <input type="date" id="tanggal-2" name="tanggal-bayar-2">
+                    <label for="tanggal-2">Bayar 2:</label> <!-- Date Field -->
                     
+                    <input type="date" id="tanggal-2" name="tanggal-bayar-2">
+
                     <label for="bayar-2">Bayar 2 (IDR):</label> <!-- Currency Field -->
                     <input type="number" id="bayar-2" name="bayar-2" placeholder="Masukkan Bayar 2 (IDR)" step="any" min="0">
 
-                    <label for="tanggal-3">Bayar 3:</label>
+                    <label for="tanggal-3">Bayar 3:</label> <!-- Date Field -->
                     <input type="date" id="tanggal-3" name="tanggal-bayar-3">
 
                     <label for="bayar-3">Bayar 3 (IDR):</label> <!-- Currency Field -->
                     <input type="number" id="bayar-3" name="bayar-3" placeholder="Masukkan Bayar 3 (IDR)" step="any" min="0">
 
-                    <label for="tanggal-4">Bayar 4:</label>
+                    <label for="tanggal-4">Bayar 4:</label> <!-- Date Field -->
                     <input type="date" id="tanggal-4" name="tanggal-bayar-4">
-                    
+
                     <label for="bayar-4">Bayar 4 (IDR):</label> <!-- Currency Field -->
                     <input type="number" id="bayar-4" name="bayar-4" placeholder="Masukkan Bayar 4 (IDR)" step="any" min="0">
 
-                    <label for="tanggal-5">Bayar 5:</label>
+                    <label for="tanggal-5">Bayar 5:</label> <!-- Date Field -->
                     <input type="date" id="tanggal-5" name="tanggal-bayar-5">
-                    
+
                     <label for="bayar-5">Bayar 5 (IDR):</label> <!-- Currency Field -->
                     <input type="number" id="bayar-5" name="bayar-5" placeholder="Masukkan Bayar 5 (IDR)" step="any" min="0">
 
-                    <label for="tanggal-6">Bayar 6:</label>
+                    <label for="tanggal-6">Bayar 6:</label> <!-- Date Field -->
                     <input type="date" id="tanggal-6" name="tanggal-bayar-6">
-                    
+
                     <label for="bayar-6">Bayar 6 (IDR):</label> <!-- Currency Field -->
                     <input type="number" id="bayar-6" name="bayar-6" placeholder="Masukkan Bayar 6 (IDR)" step="any" min="0">
 
-                    <label for="tanggal-7">Bayar 7:</label>
+                    <label for="tanggal-7">Bayar 7:</label> <!-- Date Field -->
                     <input type="date" id="tanggal-7" name="tanggal-bayar-7">
-                    
+
                     <label for="bayar-7">Bayar 7 (IDR):</label> <!-- Currency Field -->
                     <input type="number" id="bayar-7" name="bayar-7" placeholder="Masukkan Bayar 7 (IDR)" step="any" min="0">
                 </div>
@@ -997,7 +998,11 @@
             setFieldValue('bayar-7', userData[35]); // Bayar 7 (IDR)
 
             // Add Stok Lensa (was missing)
-            setFieldValue('stok-lensa', userData[36]); // Stok Lensa
+            const stoklensaField = document.querySelector(`input[name="stok-lensa"][value="${userData[36]}"]`);
+            if (stoklensaField) {
+               stoklensaField.checked = true;
+                document.querySelectorAll('input[name="stok-lensa"]').forEach(input => input.disabled = true); // Disable the radio buttons
+            }
 
         }
 
