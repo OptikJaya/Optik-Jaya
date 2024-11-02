@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optik Jaya Mandiri</title>
+    <link rel="stylesheet" href="styles.css">
+    <base target="_top">
+    <link rel="manifest" href="manifest.json">
+    <script src="https://kit.fontawesome.com/7c51dff027.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+     <!-- Login Form -->
+     <div id="login-container" class="form-container">
+        <img src="https://i.imgur.com/ciEloG8.png" alt="Logo" class="logo">
+        <h2>Login to Optik Jaya</h2>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="username">Nama Pengguna:</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Kata sandi:</label>
+                <input type="password" id="password" required>
+                <input type="checkbox" id="togglePassword"> Lihat Sandi
+            </div>
+            
+            <input type="submit" value="Login">
+        </form>
+    </div>
+   
+    <div id="menu-container" class="form-container" style="display: none;">
+        <h2>MENU</h2>
+        <!-- Container for Menu Buttons -->
+        <div class="menu-container">
+            <button id="fill-form-btn" class="menu-btn-square">
+                <i class="fa-solid fa-file-pen"></i> Isi Formulir
+            </button>
+            <button id="show-data-btn" class="menu-btn-square">
+                <i class="fas fa-eye"></i> Tampilkan Data
+            </button>
+        </div>
+    </div>
+    
+    <div id="data-view-container" class="form-container view-data-container" style="display: none;">
+        <button id="back-to-data-btn" class="back-btn">
+            <i class="fa-solid fa-circle-chevron-left fa-2x"></i>kembali
+        </button> 
+        <h2>Data Pasien</h2>
+        
+        <input type="text" id="search-view-input" placeholder="Cari data..." oninput="searchDataInView()"  style="margin-bottom: 20px; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
+        
+        <div class="table-container" id="table-container">
+            <!-- The table will be inserted here dynamically -->
+        </div>
+    </div>
+    
+    <div id="form-container" class="form-container" style="display: none;">
+        <button id="back-to-menu-btn" class="back-btn">
+            <i class="fa-solid fa-circle-chevron-left fa-2x"></i>kembali
+        </button>
+        <!-- User Info Section in the Top Right -->
+        <div id="user-info-container" style="position: absolute; top: 20px; right: 20px;">
+            <button id="user-info-btn" style="background-color: #ffffff; color: #2E7445; border: none; border-radius: 8px; padding: 10px 15px; cursor: pointer;">
+                <!-- Username will be inserted here dynamically -->
+            </button>
+            <div id="user-dropdown" style="display: none; background-color: white; border: 1px solid #ccc; padding: 10px; position: absolute; top: 40px; right: 0px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);">
+                <button id="logout-btn" style="background-color: #d9534f; color: white; border: none; border-radius: 8px; padding: 8px 15px; cursor: pointer;">Logout</button>
+            </div>
+        </div>
+        
+    
+        <!-- Logo -->
+        <img src="https://i.imgur.com/ciEloG8.png" alt="Logo" class="logo">  <!-- Add your logo URL here -->
+        <h2>Data Pasien</h2>
+
+        <form id="form" action="https://script.google.com/macros/s/AKfycbwofjXBhbdS-Gltlp5swfB4k0Lioj9AzPCabhH3ToaNh2Z5rbGZnEHg-XKNYRmGEKGj/exec" method="POST" onsubmit="submitForm(event)">
+
+            <!-- Collapsible Section 1 - Data Diri Pelanggan -->
+            <button type="button" class="collapsible">Data Diri Pelanggan</button>
+            <div class="content">
+                <div class="form-group">
+                    <label for="name">Nama</label>
+                    <input type="text" id="name" name="Nama" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Alamat</label>
+                    <input type="text" id="address" name="Alamat" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Umur</label>
+                    <input type="text" id="age" name="Umur" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">HP</label>
+                    <input type="tel" id="phone" name="HP" pattern="08[0-9]{8,11}" placeholder="081325465984" title="Masukkan nomor sesuai contoh" required>
+                </div>
+
+                <div class="field">
+                    <label class="label">Status Pelanggan</label>
+                    <div class="radio-stok" style="display: flex; flex-direction: row;">
+                      <label class="radio">
+                        <input type="radio" name="Status Pelanggan" value="Umum" /> Umum
+                      </label>
+                      <label class="radio">
+                        <input type="radio" name="Status Pelanggan" value="BPJS" /> BPJS
+                      </label>
+                    </div>
+                  </div>
+
+                <div class="form-group">
+                    <label for="coordinates">Koordinat Maps</label>
+                    <input type="text" id="coordinates" name="Koordinat" placeholder="cth. -6.200000, 106.816666" >
+                </div>
+            </div>
+
+            <!-- Collapsible Section 2 - Detail Pemesanan -->
+            <button type="button" class="collapsible">Detail Pemesanan</button>
+            <div class="content">
+                <!-- Lensa field with multiple checkboxes -->
+                <div class="form-group">
+                    <label for="lensa">Lensa:</label>
+                    <div class="radio-group" style="display: flex; flex-direction: column;">
+                        <label><input type="radio" name="lensa" value="Single - WhiteMC"> Single - WhiteMC</label><br>
+                        <label><input type="radio" name="lensa" value="Single - CRMC"> Single - CRMC</label><br>
+                        <label><input type="radio" name="lensa" value="Single - Photochromic"> Single - Photochromic</label><br>
+                        <label><input type="radio" name="lensa" value="Single - Bluechromic"> Single - Bluechromic</label><br>
+                        <label><input type="radio" name="lensa" value="Single - Night Drive"> Single - Night Drive</label><br>
+                        <label><input type="radio" name="lensa" value="Single - Blu-ray"> Single - Blu-ray</label><br>
+                        <label><input type="radio" name="lensa" value="Kriptok - WhiteMC"> Kriptok - WhiteMC</label><br>
+                        <label><input type="radio" name="lensa" value="Kriptok - CRMC"> Kriptok - CRMC</label><br>
+                        <label><input type="radio" name="lensa" value="Kriptok - Photochromic"> Kriptok - Photochromic</label><br>
+                        <label><input type="radio" name="lensa" value="Kriptok - Bluechromic"> Kriptok - Bluechromic</label><br>
+                        <label><input type="radio" name="lensa" value="Progressive - CRMC"> Progressive - CRMC</label><br>
+                        <label><input type="radio" name="lensa" value="Progressive - Photochromic"> Progressive - Photochromic</label><br>
+                        <label><input type="radio" name="lensa" value="Progressive - Bluechromic"> Progressive - Bluechromic</label><br>
+                        <label><input type="radio" name="lensa" value="Progressive - Night Drive"> Progressive - Night Drive</label><br>
+                        <label><input type="radio" name="lensa" value="Progressive - Blu-ray"> Progressive - Blu-ray</label><br>
+                        <label>
+                            <input type="radio" name="lensa" value="Other" id="lensa-other" onclick="toggleOtherInput()"> Other
+                        </label><br>
+                        <input type="text" id="lensa-other-text" name="lensa_other_text" placeholder="Isi sendiri" style="display: none; margin-top: 5px;">
+                    </div>
+                </div>
+
+                <!-- Frame field -->
+                <div class="form-group">
+                    <label for="frame">Frame</label>
+                    <input type="text" id="frame" name="frame" required>
+                </div>
+
+                <!-- Harga Awal -->
+                <div class="form-group">
+                    <label for="harga-awal">Harga Awal (Dalam Ribuan) </label>
+                    <input type="number" id="harga-awal" name="harga awal" required oninput="calculateHargaAkhir()">
+                </div>
+
+                <!-- Harga TT/Potongan -->
+                <div class="form-group">
+                    <label for="harga-tt">Harga TT/Potongan (Dalam Ribuan) </label>
+                    <input type="number" id="harga-tt" name="harga tt" placeholder="jika tidak ada tulis 0" required oninput="calculateHargaAkhir()">
+                </div>
+
+                <!-- Harga Akhir -->
+                <div class="form-group">
+                    <label for="harga-akhir">Harga Akhir (Dalam Ribuan) </label>
+                    <input type="number" id="harga-akhir" name="harga akhir" required readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Stok Lensa</label>
+                    <div class="radio-stok" style="display: flex; flex-direction: row;">
+                       <label><input type="radio" name="stok lensa" value="ada" required> Ada</label>
+                       <label><input type="radio" name="stok lensa" value="habis"> Habis</label>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- Collapsible Section 3 - Status Refraksi -->
+            <button type="button" class="collapsible">Status Refraksi</button>
+            <div class="content">
+                <table class="refraksi-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>SPH</th>
+                            <th>CYL</th>
+                            <th>AXIS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>R</td>
+                            <td><input type="text" id="sph-kanan" name="sph kanan" placeholder="SPH Kanan"></td>
+                            <td><input type="text" id="cyl-kanan" name="cyl kanan" placeholder="CYL Kanan"></td>
+                            <td><input type="text" id="axis-kanan" name="axis kanan" placeholder="AXIS Kanan"></td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td><input type="text" id="sph-kiri" name="sph kiri" placeholder="SPH Kiri"></td>
+                            <td><input type="text" id="cyl-kiri" name="cyl kiri" placeholder="CYL Kiri"></td>
+                            <td><input type="text" id="axis-kiri" name="axis kiri" placeholder="AXIS Kiri"></td>
+                        </tr>
+                        <tr>
+                            <td>ADD</td>
+                            <td><input type="text" id="sph-add" name="sph add" placeholder="SPH ADD"></td>
+                            <td><input type="text" id="cyl-add" name="cyl add" placeholder="CYL ADD"></td>
+                            <td><input type="text" id="axis-add" name="axis add" placeholder="AXIS ADD"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Collapsible Section 4 - Kirim & Tagih -->
+            <button type="button" class="collapsible">Kirim & Tagih</button>
+            <div class="content">
+                <!-- DP field -->
+                <div class="form-group">
+                    <label for="dp">DP (Dalam Ribuan)</label>
+                    <input type="number" id="dp" name="DP" required placeholder="Masukkan DP" step="any">
+                </div>
+
+                <!-- Tanggal Penagihan and Bayar fields -->
+                <div class="form-group">
+                    <label for="Pengiriman">Pengiriman</label>
+                    <input type="date" id="pengiriman" name="Pengiriman" required>
+
+                    <label for="tanggal-1">Tanggal Pembayaran 1</label>
+                    <input type="date" id="tanggal-1" name="tanggal-bayar-1" required>
+
+                    <label for="bayar-1">Pembayaran 1 </label> <!-- Currency Field -->
+                    <input type="number" id="bayar-1" name="bayar-1" placeholder="(Dalam Ribuan)" step="any" min="0">
+
+                    <label for="tanggal-2">Tanggal Pembayaran 2</label>
+                    <input type="date" id="tanggal-2" name="tanggal-bayar-2">
+                    
+                    <label for="bayar-2">Pembayaran 2 </label> <!-- Currency Field -->
+                    <input type="number" id="bayar-2" name="bayar-2" placeholder="(Dalam Ribuan)" step="any" min="0">
+
+                    <label for="tanggal-3">Tanggal Pembayaran 3</label>
+                    <input type="date" id="tanggal-3" name="tanggal-bayar-3">
+
+                    <label for="bayar-3">Pembayaran 3 </label> <!-- Currency Field -->
+                    <input type="number" id="bayar-3" name="bayar-3" placeholder="(Dalam Ribuan)" step="any" min="0">
+
+                    <label for="tanggal-4">Tanggal Pembayaran 4</label>
+                    <input type="date" id="tanggal-4" name="tanggal-bayar-4">
+                    
+                    <label for="bayar-4">Pembayaran 4 </label> <!-- Currency Field -->
+                    <input type="number" id="bayar-4" name="bayar-4" placeholder="(Dalam Ribuan)" step="any" min="0">
+
+                    <label for="tanggal-5">Tanggal Pembayaran 5</label>
+                    <input type="date" id="tanggal-5" name="tanggal-bayar-5">
+                    
+                    <label for="bayar-5">Pembayaran 5 </label> <!-- Currency Field -->
+                    <input type="number" id="bayar-5" name="bayar-5" placeholder="(Dalam Ribuan)" step="any" min="0">
+
+                    <label for="tanggal-6">Tanggal Pembayaran 6</label>
+                    <input type="date" id="tanggal-6" name="tanggal-bayar-6">
+                    
+                    <label for="bayar-6">Pembayaran 6 </label> <!-- Currency Field -->
+                    <input type="number" id="bayar-6" name="bayar-6" placeholder="(Dalam Ribuan)" step="any" min="0">
+
+                    <label for="tanggal-7">Tanggal Pembayaran 7</label>
+                    <input type="date" id="tanggal-7" name="tanggal-bayar-7">
+                    
+                    <label for="bayar-7">Pembayaran 7 </label> <!-- Currency Field -->
+                    <input type="number" id="bayar-7" name="bayar-7" placeholder="(Dalam Ribuan)" step="any" min="0">
+                </div>
+            </div>
+            
+            <!-- Add the hidden input field here to store the username -->
+            <input type="hidden" id="username-field" name="username" value="">
+            <input type="hidden" id="row-id" name="rowId">
+
+            <div class="button-group">
+            <input type="submit" value="Kirim Data" id="submit-button">
+            <div id="loading-indicator" style="display: none;">sabar kak loading...</div>
+            <button type="reset" id="reset-form-btn" class="reset-btn-custom">Reset Form</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="scripts.js"></script>
+
+</body>
+</html>
