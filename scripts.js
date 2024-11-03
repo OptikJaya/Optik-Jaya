@@ -94,7 +94,7 @@ document.getElementById('login-form').addEventListener('submit', login);
      const apiKey = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0'; // Your API key
      const loggedInUser = localStorage.getItem('username'); // Get the logged-in user's username
 
-     const sheetRanges = [`${loggedInUser}!A1:AK`]; // Ensure the username is the correct sheet name
+     const sheetRanges = [`${loggedInUser}!A1:AL`]; // Ensure the username is the correct sheet name
      const rangesQuery = sheetRanges.map(range => `ranges=${encodeURIComponent(range)}`).join('&');
 
      const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values:batchGet?${rangesQuery}&key=${apiKey}`;
@@ -123,16 +123,21 @@ document.getElementById('login-form').addEventListener('submit', login);
 // Fungsi untuk menampilkan data pengguna dengan Row ID tersembunyi
 function displayUserData(data) {
     const tableContainer = document.getElementById('table-container');
-    tableContainer.innerHTML = ''; // Bersihkan konten sebelumnya
+    tableContainer.innerHTML = ''; // Clear previous content
 
-    // Tambahkan header tanpa menampilkan Row ID
+    // Add table headers
     const headers = data[0];
-    let tableHtml = `<table border="1"><thead><tr>${headers.map(header => `<th>${header}</th>`).join('')}<th>Action</th></tr></thead><tbody>`;
+    let tableHtml = `<table border="1"><thead><tr>${headers.map(header => `<th>${header}</th>`).join('')}<th>Actions</th></tr></thead><tbody>`;
 
-    // Tambahkan data row dengan tombol Edit dan Row ID tersembunyi
+    // Add data rows with "Edit" and "See Details" buttons
     data.slice(1).forEach((row, index) => {
-        const rowId = index + 2; // Row ID untuk referensi di Google Sheets
-        tableHtml += `<tr data-row-id="${rowId}">${row.map(cell => `<td>${cell || ''}</td>`).join('')}<td><button onclick="editRow(this)">Edit</button></td></tr>`;
+        const rowId = index + 2; // Row ID for reference
+        tableHtml += `<tr data-row-id="${rowId}">${row.map(cell => `<td>${cell || ''}</td>`).join('')}
+            <td>
+                <button onclick="editRow(${rowId})">Edit</button>
+                <button onclick="viewDetails(${rowId})">Detail</button>
+            </td>
+        </tr>`;
     });
 
     tableHtml += '</tbody></table>';
@@ -220,7 +225,6 @@ function editRow(button) {
     submitButton.setAttribute("data-mode", "edit"); // Tandai mode edit
 }
 
-
  // Search function
  function searchDataInView() {
     const input = document.getElementById('search-view-input').value.toLowerCase();
@@ -234,12 +238,48 @@ function editRow(button) {
     });
 }
 
-
  // Back button for data view
  document.getElementById('back-to-data-btn').addEventListener('click', function() {
      document.getElementById('data-view-container').style.display = 'none'; 
      document.getElementById('menu-container').style.display = 'block'; 
  });
+
+function viewDetails(rowId) {
+    const row = document.querySelector(`tr[data-row-id="${rowId}"]`);
+    const cells = row.querySelectorAll('td');
+
+    // Populate the summary fields in the "Rincian Pembayaran Pelanggan" section
+    document.getElementById('summary-nama').textContent = cells[0].textContent; // Nama
+    document.getElementById('summary-alamat').textContent = cells[1].textContent; // Alamat
+    document.getElementById('summary-hp').textContent = cells[3].textContent; // HP
+
+    document.getElementById('summary-tanggal-dp').textContent = cells[21]?.textContent || '-';
+    document.getElementById('summary-bayar-dp').textContent = cells[20]?.textContent || '-';
+
+    // Assuming the payment fields start from a specific column
+    for (let i = 1; i <= 7; i++) {
+        document.getElementById(`summary-tanggal-${i}`).textContent = cells[22 + (i - 1) * 2]?.textContent || '-';
+        document.getElementById(`summary-bayar-${i}`).textContent = cells[23 + (i - 1) * 2]?.textContent || '-';
+    }
+
+    // Set the remaining balance
+    document.getElementById('summary-sisa-cicilan').textContent = cells[37]?.textContent || '-';
+
+    // Show the payment summary section and hide other sections
+    document.getElementById('data-view-container').style.display = 'none';
+    document.getElementById('payment-summary-container').style.display = 'block';
+}
+
+document.getElementById('back-to-data-btn').addEventListener('click', function() {
+    document.getElementById('data-view-container').style.display = 'none';
+    document.getElementById('menu-container').style.display = 'block';
+});
+
+document.getElementById('back-to-menu-from-summary-btn').addEventListener('click', function() {
+    document.getElementById('payment-summary-container').style.display = 'none';
+    document.getElementById('menu-container').style.display = 'block';
+});
+
 
  // Toggle Password Visibility
  document.getElementById('togglePassword').addEventListener('change', function() {
