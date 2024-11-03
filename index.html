@@ -39,7 +39,7 @@
             </button>
             <button id="show-data-btn" class="menu-btn-square">
                 <i class="fas fa-eye"></i> Tampilkan Data
-            </button>
+            </button>          
         </div>
     </div>
     
@@ -55,6 +55,88 @@
             <!-- The table will be inserted here dynamically -->
         </div>
     </div>
+
+    <div id="payment-summary-container" class="form-container" style="display: none;">
+        <button id="back-to-menu-from-summary-btn" class="back-btn">
+            <i class="fa-solid fa-circle-chevron-left fa-2x"></i> Kembali
+        </button>
+        <h2>Rincian Pembayaran Pelanggan</h2>
+        <!-- Informasi Pelanggan -->
+        <div class="form-group">
+            <label>Nama:</label>
+            <span id="summary-nama"></span>
+        </div>
+        <div class="form-group">
+            <label>Alamat:</label>
+            <span id="summary-alamat"></span>
+        </div>
+        <div class="form-group">
+            <label>HP:</label>
+            <span id="summary-hp"></span>
+        </div>
+    
+        <!-- Tabel Pembayaran -->
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Des</th>
+                    <th>Tanggal</th>
+                    <th>Jumlah</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- DP Row -->
+                <tr>
+                    <td>DP</td>
+                    <td id="summary-tanggal-dp">Pengiriman</td>
+                    <td id="summary-bayar-dp">DP</td>
+                </tr>
+                <!-- Payment Rows -->
+                <tr>
+                    <td>1</td>
+                    <td id="summary-tanggal-1">Bayar 1</td>
+                    <td id="summary-bayar-1">Bayar 1 (IDR)</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td id="summary-tanggal-2">Bayar 2</td>
+                    <td id="summary-bayar-2">Bayar 2 (IDR)</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td id="summary-tanggal-3">Bayar 3</td>
+                    <td id="summary-bayar-3">Bayar 3 (IDR)</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td id="summary-tanggal-4">Bayar 4</td>
+                    <td id="summary-bayar-4">Bayar 4 (IDR)</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td id="summary-tanggal-5">Bayar 5</td>
+                    <td id="summary-bayar-5">Bayar 5 (IDR)</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td id="summary-tanggal-6">Bayar 6</td>
+                    <td id="summary-bayar-6">Bayar 6 (IDR)</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td id="summary-tanggal-7">Bayar 7</td>
+                    <td id="summary-bayar-7">Bayar 7 (IDR)</td>
+                </tr>
+                <!-- Total Kekurangan Row -->
+                <tr>
+                    <td>8</td>
+                    <td>Total Kekurangan</td>
+                    <td id="summary-sisa-cicilan">Sisa Cicilan</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
     
     <div id="form-container" class="form-container" style="display: none;">
         <button id="back-to-menu-btn" class="back-btn">
