@@ -134,7 +134,7 @@ function displayUserData(data) {
         const rowId = index + 2; // Row ID for reference
         tableHtml += `<tr data-row-id="${rowId}">${row.map(cell => `<td>${cell || ''}</td>`).join('')}
             <td>
-                <button onclick="editRow(${rowId})">Edit</button>
+                <button onclick="editRow(this)">Edit</button>
                 <button onclick="viewDetails(${rowId})">Detail</button>
             </td>
         </tr>`;
@@ -152,11 +152,8 @@ function editRow(button) {
     const rowId = row.getAttribute('data-row-id');
     document.getElementById('row-id').value = rowId; // Set Row ID di input hidden
 
-    // Isi data form mulai dari kolom "Nama"
-    document.getElementById('name').value = cells[0]?.textContent || '';
-
-    // Daftar elemen form dan kolom terkait
     const formElements = [
+        { id: 'name', cellIndex: 0 },
         { id: 'address', cellIndex: 1 },
         { id: 'age', cellIndex: 2 },
         { id: 'phone', cellIndex: 3 },
