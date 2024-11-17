@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optik Jaya Mandiri</title>
+    <title>Optik Jaya</title>
     <link rel="stylesheet" href="styles.css">
     <base target="_top">
     <link rel="manifest" href="manifest.json">
@@ -13,7 +13,7 @@
 <body>
      <!-- Login Form -->
      <div id="login-container" class="form-container">
-        <img src="https://i.imgur.com/ciEloG8.png" alt="Logo" class="logo">
+        <img src="https://raw.githubusercontent.com/OptikJaya/Optik-Jaya/refs/heads/main/1.png" alt="Logo" class="logo">
         <h2>Login to Optik Jaya</h2>
         <form id="login-form">
             <div class="form-group">
@@ -21,9 +21,9 @@
                 <input type="text" id="username" required>
             </div>
             <div class="form-group">
-                <label for="password">Kata sandi:</label>
+                <label for="password" >Kata sandi:</label>
                 <input type="password" id="password" required>
-                <input type="checkbox" id="togglePassword"> Lihat Sandi
+                <input type="checkbox" id="togglePassword" class="lihat-sandi"> Lihat Sandi
             </div>
             
             <input type="submit" value="Login">
@@ -32,24 +32,150 @@
    
     <div id="menu-container" class="form-container" style="display: none;">
         <h2>MENU</h2>
-        <!-- Container for Menu Buttons -->
         <div class="menu-container">
             <button id="fill-form-btn" class="menu-btn-square">
-                <i class="fa-solid fa-file-pen"></i> Isi Formulir
+                <img src="https://raw.githubusercontent.com/OptikJM/icon/refs/heads/main/Asset%201fill.svg" alt="Isi Formulir" class="menu-icon">
+                Isi Formulir
             </button>
             <button id="show-data-btn" class="menu-btn-square">
-                <i class="fas fa-eye"></i> Tampilkan Data
-            </button>          
+                <img src="https://raw.githubusercontent.com/OptikJM/icon/refs/heads/main/Asset%202laporan.svg" alt="Tampilkan Data" class="menu-icon">
+                Tampilkan Data
+            </button>
+            <button id="monthly-report-btn" class="menu-btn-square">
+                <img src="https://raw.githubusercontent.com/OptikJM/icon/refs/heads/main/Asset%203laporan.svg" alt="Laporan Bulananku" class="menu-icon">
+                Bulananku
+            </button>
+            <button id="all-sales-report-btn" class="menu-btn-square">
+                <img src="https://raw.githubusercontent.com/OptikJM/icon/main/Asset%204laporan.svg" alt="Laporan Semua Sales" class="menu-icon">
+                Laporan Sales
+            </button>
         </div>
     </div>
     
+
+    <div id="monthly-report-container" class="form-container" style="display: none;">
+        <button id="back-to-menu-from-report-btn" class="back-btn">
+            <i class="fa-solid fa-circle-chevron-left fa-2x"></i> Kembali
+        </button>
+        <h2>Laporan Bulananku</h2>
+        <div style="display: flex; gap: 10px;">
+            <label for="select-month-monthly">Bulan:</label>
+            <select id="select-month-monthly" class="dropdown-style">
+                <option value="">Pilih Bulan</option>
+                <option value="1">Januari</option>
+                <option value="2">Februari</option>
+                <option value="3">Maret</option>
+                <option value="4">April</option>
+                <option value="5">Mei</option>
+                <option value="6">Juni</option>
+                <option value="7">Juli</option>
+                <option value="8">Agustus</option>
+                <option value="9">September</option>
+                <option value="10">Oktober</option>
+                <option value="11">November</option>
+                <option value="12">Desember</option>
+            </select>
+            <label for="select-year-monthly">Tahun:</label>
+            <select id="select-year-monthly" class="dropdown-style">
+                <option value="">Pilih Tahun</option>
+            </select>
+            <button onclick="loadReportByMonth()"class="search-btn-style">
+                <i class="fas fa-search"></i> Cari
+            </button>
+        </div>
+
+        <table >
+            <thead>
+                <tr>
+                    <th>Nomor</th>
+                    <th>Nama</th>
+                    <th>Alamat</th>
+                    <th>Transaksi</th>
+                    <th>Kacamata</th>
+                    <th>Uang</th>
+                </tr>
+            </thead>
+            <tbody id="report-table-body">
+            <tfoot>
+                <tr>
+                    <td> </td>
+                    <td> </td> 
+                    <td> </td>
+                    <td><strong>Total</strong></td> <!-- "Total" pada kolom Tanggal Transaksi -->
+                    <td id="total-kacamata">0</td> <!-- Jumlah Kacamata -->
+                    <td id="total-omset">Rp0</td> <!-- Total Omset -->
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div id="semua-sales-container" class="form-container" style="display: none;">
+        <button id="back-to-menu-from-semua-sales-btn" class="back-btn">
+            <i class="fa-solid fa-circle-chevron-left fa-2x"></i> Kembali
+        </button>
+        <h2>Detail Laporan Bulanan</h2>
+
+        <div style="display: flex; gap: 10px;">
+            <label for="select-month-allsales">Bulan:</label>
+            <select id="select-month-allsales" class="dropdown-style">
+                <option value="">Pilih Bulan</option>
+                <option value="1">Januari</option>
+                <option value="2">Februari</option>
+                <option value="3">Maret</option>
+                <option value="4">April</option>
+                <option value="5">Mei</option>
+                <option value="6">Juni</option>
+                <option value="7">Juli</option>
+                <option value="8">Agustus</option>
+                <option value="9">September</option>
+                <option value="10">Oktober</option>
+                <option value="11">November</option>
+                <option value="12">Desember</option>
+            </select>
+
+            <label for="select-year-allsales">Tahun:</label>
+            <select id="select-year-allsales" class="dropdown-style">
+                <option value="">Tahun</option>
+            </select>
+            <button onclick="loadAllSalesMonthlyReport()"class="search-btn-style">
+                <i class="fas fa-search"></i> Cari
+            </button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nomor</th>
+                    <th>Nama</th>
+                    <th>Transaksi</th>
+                    <th>Kacamata</th>
+                    <th>Uang</th>
+                </tr>
+            </thead>
+            <tbody id="semua-sales-table-body">
+            <tfoot>
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td><strong>Total</strong></td> <!-- "Total" pada kolom Tanggal Transaksi -->
+                    <td id="total-kacamata-semua">0</td> <!-- Jumlah Kacamata -->
+                    <td id="total-omset-semua">Rp0</td> <!-- Total Omset -->
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
     <div id="data-view-container" class="form-container view-data-container" style="display: none;">
         <button id="back-to-data-btn" class="back-btn">
             <i class="fa-solid fa-circle-chevron-left fa-2x"></i>kembali
         </button> 
         <h2>Data Pasien</h2>
         
-        <input type="text" id="search-view-input" placeholder="Cari data..." oninput="searchDataInView()"  style="margin-bottom: 20px; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
+        <input type="text" id="search-view-input" placeholder="Cari data..." oninput="searchDataInView()"  class="search-view-style">
+        <div id="action-buttons" style="display: none; margin-top: 10px;">
+            <button id="edit-button" class="action-button" onclick="editRow()">Edit</button>
+            <button id="detail-button" class="action-button" onclick="viewDetails()">Detail</button>
+        </div>
+         
         
         <div class="table-container" id="table-container">
             <!-- The table will be inserted here dynamically -->
@@ -63,20 +189,20 @@
         <h2>Rincian Pembayaran Pelanggan</h2>
         <!-- Informasi Pelanggan -->
         <div class="form-group">
-            <label>Nama:</label>
-            <span id="summary-nama"></span>
+            <label id="label-rincian" class="label-rincian">Nama:</label>
+            <span id="summary-nama" class="summary-rincian"></span>
         </div>
         <div class="form-group">
-            <label>Alamat:</label>
-            <span id="summary-alamat"></span>
+            <label id="label-rincian" class="label-rincian">Alamat:</label>
+            <span id="summary-alamat" class="summary-rincian"></span>
         </div>
         <div class="form-group">
-            <label>HP:</label>
-            <span id="summary-hp"></span>
+            <label id="label-rincian" class="label-rincian">HP:</label>
+            <span id="summary-hp" class="summary-rincian"></span>
         </div>
     
         <!-- Tabel Pembayaran -->
-        <table border="1">
+        <table>
             <thead>
                 <tr>
                     <th>Des</th>
@@ -135,8 +261,7 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-    
+    </div>  
     
     <div id="form-container" class="form-container" style="display: none;">
         <button id="back-to-menu-btn" class="back-btn">
@@ -144,20 +269,20 @@
         </button>
         <!-- User Info Section in the Top Right -->
         <div id="user-info-container" style="position: absolute; top: 20px; right: 20px;">
-            <button id="user-info-btn" style="background-color: #ffffff; color: #2E7445; border: none; border-radius: 8px; padding: 10px 15px; cursor: pointer;">
+            <button id="user-info-btn" style="background-color: #10EFC3; color: #000000; font-weight: bold; border: none; border-radius: 8px; padding: 10px 15px; cursor: pointer;">
                 <!-- Username will be inserted here dynamically -->
             </button>
             <div id="user-dropdown" style="display: none; background-color: white; border: 1px solid #ccc; padding: 10px; position: absolute; top: 40px; right: 0px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);">
-                <button id="logout-btn" style="background-color: #d9534f; color: white; border: none; border-radius: 8px; padding: 8px 15px; cursor: pointer;">Logout</button>
+                <button id="logout-btn" style="background-color: #F24B4B; color: white; border: none; border-radius: 8px; padding: 8px 15px; cursor: pointer;">Logout</button>
             </div>
         </div>
         
     
         <!-- Logo -->
-        <img src="https://i.imgur.com/ciEloG8.png" alt="Logo" class="logo">  <!-- Add your logo URL here -->
+        <img src="https://raw.githubusercontent.com/OptikJaya/Optik-Jaya/refs/heads/main/1.png" alt="Logo" class="logo">  <!-- Add your logo URL here -->
         <h2>Data Pasien</h2>
 
-        <form id="form" action="https://script.google.com/macros/s/AKfycbzIj6KOH5s6HP3rJ0MUa22GpE2_KEWqFpd4GlsoZ6Q_qTZp4QqsWPgBA6d6wJ7m2JpC/exec" method="POST" onsubmit="submitForm(event)">
+        <form id="form" action="https://script.google.com/macros/s/AKfycbzkirki7_2rU4NfrzxauVSz9UTCOgCU0uGRWFvudWNQ6LqNwVJFeTd3N2GBogw072H8/exec" method="POST" onsubmit="submitForm(event)">
 
             <!-- Collapsible Section 1 - Data Diri Pelanggan -->
             <button type="button" class="collapsible">Data Diri Pelanggan</button>
@@ -179,7 +304,7 @@
 
                 <div class="form-group">
                     <label for="phone">HP</label>
-                    <input type="text" id="phone" name="HP"  placeholder="081325465984" title="Masukkan nomor sesuai contoh" required>
+                    <input type="tel" id="phone" name="HP" pattern="08[0-9]{8,11}" placeholder="081325465984" title="Masukkan nomor sesuai contoh" required>
                 </div>
 
                 <div class="field">
@@ -304,7 +429,7 @@
                 <!-- DP field -->
                 <div class="form-group">
                     <label for="dp">DP (Dalam Ribuan)</label>
-                    <input type="number" id="dp" name="DP" required placeholder="Masukkan DP" step="any">
+                    <input type="number" id="dp" name="DP" placeholder="Masukkan DP" step="any">
                 </div>
 
                 <!-- Tanggal Penagihan and Bayar fields -->
@@ -313,7 +438,7 @@
                     <input type="date" id="pengiriman" name="Pengiriman" required>
 
                     <label for="tanggal-1">Tanggal Pembayaran 1</label>
-                    <input type="date" id="tanggal-1" name="tanggal-bayar-1">
+                    <input type="date" id="tanggal-1" name="tanggal-bayar-1" required>
 
                     <label for="bayar-1">Pembayaran 1 </label> <!-- Currency Field -->
                     <input type="number" id="bayar-1" name="bayar-1" placeholder="(Dalam Ribuan)" step="any" min="0">
