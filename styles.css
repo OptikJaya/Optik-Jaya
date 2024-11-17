@@ -7,14 +7,15 @@
 }
 
 body {
-    background: linear-gradient(135deg, #2E7445, #2E7445);
+    background: url('https://lh3.googleusercontent.com/pw/AP1GczPeyHe5UeKlmCU4f_f-43kEd7962p9HGERBfxnrgGq3zS3tiPMIJ6Wi30RSPrzAR6uNqc9reGuB-01JwDyKlifG-HlAOTkoToBc3DISq9ppjeNhdA=w2400') no-repeat center center fixed;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     padding: 10px;
-    overflow: auto; /* Allow scrolling */
-    touch-action: manipulation;  /* Enable gestures like pinch and pan */
+    overflow: auto;
+    touch-action: manipulation;
 }
 
 .form-container {
@@ -38,35 +39,41 @@ body {
 }
     h2 {
     text-align: center;
+    margin-top: 30px;
     margin-bottom: 10px;
     font-weight: 600;
-    color: #333;
+    color: #ffffff;
 }
 
 .logo {
+    border: 0px solid;
+    border-color: white;
     display: block;
-    margin: 0px auto 5px; /* Center the logo and add margin below */
-    max-width: 7vh; /* Ensure the logo is responsive */
-    height: 7vh; /* Maintain aspect ratio */
+    margin: auto; /* Center the logo and add margin below */
+    max-width: 10vh; /* Ensure the logo is responsive */
+    height: 10vh; /* Maintain aspect ratio */
 }
 
 .collapsible {
-    background-color: #2E7445;
-    color: white;
+    background-color: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: black;
     cursor: pointer;
     padding: 15px;
     width: 100%;
-    border: none;
     text-align: left;
     outline: none;
     font-size: 18px;
+    font-weight: bold;
     border-radius: 10px;
     margin-bottom: 10px;
     transition: background-color 0.3s ease;
 }
 
 .collapsible:hover {
-    background-color: #194d2a;
+    background-color: #9ba5e18f;
 }
 
 .collapsible:after {
@@ -83,7 +90,7 @@ body {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease-out;
-    background-color: #f1f1f1;
+    background-color: #f1f1f100;
     padding: 0px 15px;
     border-radius: 8px;
     margin-bottom: 15px;
@@ -98,7 +105,7 @@ label {
     margin-top: 15px;
     margin-bottom: 15px;
     font-weight: 600;
-    color: #030e07;
+    color: #ffffff;
 }
 
 .radio-group label {
@@ -120,7 +127,7 @@ textarea {
     border: 1px solid #ccc;
     font-size: 16px;
     color: #333;
-    background-color: #f9f9f9;
+    background-color: #f9f9f996;
     box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
 }
@@ -142,17 +149,18 @@ textarea {
 input[type="submit"] {
     width: 60%;
     padding: 12px;
-    background-color: #2E7445;
-    color: white;
+    background-color: #dfbb4d;
+    color: black;
     font-size: 18px;
     border: none;
+    font-weight: bold;
     border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 input[type="submit"]:hover {
-    background-color: #194d2a;
+    background-color: #a58a37;
     transform: translateY(-2px);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
@@ -181,6 +189,7 @@ input[type="submit"]:active {
 /* Style for form groups within the login container */
 #login-container .form-group {
     margin-bottom: 15px;
+    padding: 0px;
 }
 
 /* Input fields for text and password with rounded edges */
@@ -204,8 +213,8 @@ input[type="submit"]:active {
     margin: 0 auto; /* Center-align the button */
     display: block; /* Makes it centered in the container */
     padding: 10px;
-    background-color: #2E7445;
-    color: #fff;
+    background-color: #4085e2;
+    color: #ffffff;
     border: none;
     border-radius: 20px;
     cursor: pointer;
@@ -214,7 +223,7 @@ input[type="submit"]:active {
 
 /* Hover effect for login button */
 #login-container input[type="submit"]:hover {
-    background-color: #164626;
+    background-color: #151c26;
 }
 
 
@@ -225,13 +234,13 @@ input[type="submit"]:active {
     display: block;             /* Make sure the container is a block element */
     width: 100%;                /* Make the container take up the full width */
     box-sizing: border-box;     /* Include padding and border in width/height */
-    white-space: nowrap;        /* Prevent the table from wrapping inside the container */
+    white-space: nowrap;
 }
 
 table {
     width: 100%;                /* Set table width to 100% for responsiveness */
     table-layout: auto;         /* Allow auto layout for better cell sizing */
-    
+    border-color: #ffffff00;
 }
 
 th, td {
@@ -239,11 +248,13 @@ th, td {
     overflow: hidden;           /* Hide overflowed content */
     padding: 12px;              /* Increased padding for better readability */
     text-align: center;         /* Center-align text inside cells */
+    border-radius: 5px;
     font-size: 14px;            /* Adjust font size for readability */
+    border-color: #89898961;
 }
 
 th {
-    background-color: #2E7445; /* Header background color */
+    background-color: #4085e2; /* Header background color */
     color: white;               /* Header text color */
     font-weight: bold;          /* Make header text bold */
 }
@@ -338,7 +349,7 @@ th:first-child, td:first-child {
 }
 
 .refraksi-table td {
-    background-color: #f9f9f9;
+    background-color: #f9f9f900;
 }
 
 
@@ -406,10 +417,11 @@ th:first-child, td:first-child {
 /* Style for Reset Form button */
 .reset-btn-custom {
     background-color: #d3d3d300;  /* Light grey */
-    color: black;
+    color: white;
     /* padding: 0px 0px; */
     /* border-radius: 8px; */
     cursor: pointer;
+    font-weight: 500;
     font-size: 15px;
     border: none;
     /* transition: background-color 0.3s ease, transform 0.2s ease; */
@@ -443,14 +455,16 @@ th:first-child, td:first-child {
 
 /* Custom Menu Button Styling - Square Buttons */
 .menu-btn-square {
-    background-color: #2E7445; /* Button background color */
-    color: white;
+    background: rgba(255, 255, 255, 0.2); /* Button background color */
+    color: black;
+    backdrop-filter: blur(10px);
     width: 150px;   /* Fixed width to make it square */
     height: 150px;  /* Fixed height to make it square */
     border-radius: 8px;
+    -webkit-backdrop-filter: blur(10px);
     cursor: pointer;
     font-size: 16px; /* Text size */
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     display: flex;
     flex-direction: column;  /* Stack icon and text vertically */
     align-items: center;     /* Center icon and text vertically */
@@ -459,6 +473,14 @@ th:first-child, td:first-child {
     text-align: center;
 }
 
+.menu-icon {
+    width: 80px;
+    height: 80px;
+    vertical-align: baseline; /* Aligns the icon vertically with the text */
+    margin: 0px; /* Space between the icon and the text */
+}
+
+
 /* Style for the icons */
 .menu-btn-square i {
     font-size: 30px;   /* Adjust icon size */
@@ -466,7 +488,129 @@ th:first-child, td:first-child {
 }
 
 .menu-btn-square:hover {
-    background-color: #194d2a; /* Darker background on hover */
+    background-color: #9ba5e18f; /* Darker background on hover */
     transform: translateY(-2px); /* Slight raise effect on hover */
 }
 
+/* Glass Effect Style */
+.glass-container {
+    background: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+    border-radius: 15px;
+    backdrop-filter: blur(10px); /* Blur effect for glass */
+    -webkit-backdrop-filter: blur(10px); /* Blur effect for Safari */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border to enhance glass effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+}
+
+/* Apply the glass effect specifically to form containers */
+.form-container, .view-data-container {
+    background-color: rgba(255, 255, 255, 0.25); /* Glassy look */
+    border-radius: 15px;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* General styles for dropdowns */
+.dropdown-style {
+    /* padding: 8px; */
+    border-radius: 6px;
+    /* border: 1px solid #ccc; */
+    font-size: 12px;
+    background-color: #f9f9f9;
+    color: #333;
+    transition: border-color 0.3s;
+    outline: none;
+    margin-bottom: 10px;
+}
+
+.dropdown-style:focus {
+    border-color: #10EFC3; /* Highlight color when focused */
+}
+
+/* Styling for the search button */
+.search-btn-style {
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: rgb(116 235 213); /* Set button color */
+    color: black;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 10px;
+}
+
+.search-btn-style:hover {
+    background-color: #0dd1af; /* Darken button on hover */
+}
+
+.search-btn-style:active {
+    background-color: #0ac89b; /* Darker color on click */
+}
+
+.search-view-style {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+/* Styles for Edit and Detail buttons */
+.action-button {
+    background-color: #5626ca; /* Green background */
+    color: white; /* White text */
+    padding: 10px 20px; /* Button padding */
+    margin: 5px; /* Space between buttons */
+    border: none; /* Remove default border */
+    border-radius: 20px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-weight: bold;
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.action-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+.action-button:active {
+    background-color: #3e8e41; /* Even darker green on click */
+}
+
+.Nama-detail {
+    background-color: #4085e200;
+    border-color: #ffffff00;
+    color: #000000;
+    font-weight: bold;
+}
+
+/* Style for the selected name cell */
+.selected-name {
+    background-color: #4085e2; /* Light blue background */
+    color: #ff0000; /* Change text color to blue */
+    font-weight: bold; /* Make the text bold */
+    border-radius: 4px; /* Add a slight rounding to the cell */
+}
+
+.label-rincian{
+    border: 1px;
+     /* Remove the default right border */
+    padding: 5px 20px 5px 10px; /* Add extra padding on the right */
+    border-radius: 20px;
+    margin-bottom: 10px;
+    margin-right: 240px;
+    background-color: #4085e2;
+    position: relative;
+}
+
+.lihat-sandi{
+    margin-top: 14px;
+    color: white;
+}
+
+.summary-rincian{
+    color: white;
+    margin-left: 4px;
+    font-size: 13pt;
+}
