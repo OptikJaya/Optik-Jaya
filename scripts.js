@@ -1,34 +1,68 @@
+let laporanSemuaSales = [];
+let refreshing = false;
+
 // Cache DOM elements at the top of your script
 const loginContainer = document.getElementById('login-container');
 const formContainer = document.getElementById('form-container');
 const menuContainer = document.getElementById('menu-container');
 const userInfoBtn = document.getElementById('user-info-btn');
-const userDropdown = document.getElementById('user-dropdown'); 
 const logoutBtn = document.getElementById('logout-btn');
 const tableContainer = document.querySelector('.table-container');
+const submitButton = document.getElementById('submit-button');
+const loadingIndicator = document.getElementById('loading-indicator');
+const searchViewInput = document.getElementById('search-view-input');
+const dataViewContainer = document.getElementById('data-view-container')
+const paymentSummaryContainer = document.getElementById('payment-summary-container')
+const monthlyReportContainer = document.getElementById('monthly-report-container')
+const semuaSalesContainer = document.getElementById('semua-sales-container')
+
+// Constants
+const SHEET_ID = '1-Appfrc9S7RzJZO5aq4oxn73FtaOregvL3vOzpGJf6M';
+const API_KEY = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0';
+const KODE_UTAMA = 'https://script.google.com/macros/s/AKfycbzkirki7_2rU4NfrzxauVSz9UTCOgCU0uGRWFvudWNQ6LqNwVJFeTd3N2GBogw072H8/exec';
+
 
 function toggleVisibility(showElement, hideElement) {
     showElement.style.display = 'block';
     hideElement.style.display = 'none';
 }
 
+// Function to handle logout
+function handleLogout() {
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('username');
+    toggleVisibility(loginContainer, formContainer);
+    location.reload();
+}
+
 // Function to run when the window loads
 window.onload = function () {
     if (localStorage.getItem('loggedIn') === 'true') {
         const username = localStorage.getItem('username');
+        const role = localStorage.getItem('role'); // Ambil role yang tersimpan
+        
         if (username) {
             const menuHeader = document.querySelector('#menu-container h2');
             menuHeader.textContent = 'Hai, ' + username + '!';
-            userInfoBtn.textContent = username;  // Update button text
-            toggleVisibility(menuContainer, loginContainer); // Show menu container
-            formContainer.style.display = 'none'; // Ensure the form is hidden initially
+            userInfoBtn.textContent = username;
+            toggleVisibility(menuContainer, loginContainer);
+            formContainer.style.display = 'none';
+            
+            // Tampilkan atau sembunyikan menu laporan semua sales berdasarkan role
+            const allSalesReportBtn = document.getElementById('all-sales-report-btn');
+            if (role === 'admin') {
+                allSalesReportBtn.style.display = 'block'; // Tampilkan untuk admin
+            } else {
+                allSalesReportBtn.style.display = 'none'; // Sembunyikan untuk role lain
+            }
         }
     } else {
-        toggleVisibility(loginContainer, menuContainer); // Show login form if not logged in
-        formContainer.style.display = 'none'; // Ensure the form is hidden initially
+        toggleVisibility(loginContainer, menuContainer);
+        formContainer.style.display = 'none';
     }
-    resetTimer();  // Reset inactivity timer
+    resetTimer();
 };
+
 
 
  // Toggle dropdown visibility when the user info button is clicked
@@ -52,15 +86,12 @@ function login(event) {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    fetch('https://script.google.com/macros/s/AKfycbyd-FvnNJMC7pTNOOEeWgHBJmP4MRMNLOwi_fOwwcg9877m7pSGxgkv_qTgYaMu8FsT/exec')
+    fetch('https://script.google.com/macros/s/AKfycbwjvsy2rLsXu7nSEZALPNsndiE64slRr3nkIt9paC4-lJeHsBdYp6IJRCsl1RgO2zI5/exec') // Ganti dengan URL Apps Script Anda
         .then(response => response.json())
         .then(credentials => {
             const user = credentials.find(user => user.username === username && user.password === password);
             if (user) {
-                localStorage.setItem('loggedIn', 'true');
-                localStorage.setItem('username', user.username);
-                toggleVisibility(menuContainer, loginContainer); // Show the main form
-                userInfoBtn.textContent = user.username; // Update button text
+                handleLoginSuccess(user.username, user.role); // Tambahkan role saat login sukses
             } else {
                 alert('Akun salah, coba lagi.');
             }
@@ -71,13 +102,29 @@ function login(event) {
         });
 }
 
+// Function to handle login success
+function handleLoginSuccess(username, role) {
+    console.log('User role:', role);  // Add this line to check the role
+    localStorage.setItem('loggedIn', 'true');
+    localStorage.setItem('username', username);
+    localStorage.setItem('role', role); // Store the role
+    userInfoBtn.textContent = username;
+    toggleVisibility(menuContainer, loginContainer);
+
+    if (role === 'admin') {
+        document.getElementById('all-sales-report-btn').style.display = 'block';
+    } else {
+        document.getElementById('all-sales-report-btn').style.display = 'none'; // Hide the button for non-admin users
+    }
+}
+
+
 // Attach login event to the form
 document.getElementById('login-form').addEventListener('submit', login);
 
  // Handle the menu buttons for navigating
  document.getElementById('fill-form-btn').addEventListener('click', function() {
-     document.getElementById('menu-container').style.display = 'none';
-     document.getElementById('form-container').style.display = 'block';
+    toggleVisibility(formContainer,menuContainer)
  });
 
  // Event listener for the show data button
@@ -87,17 +134,13 @@ document.getElementById('login-form').addEventListener('submit', login);
  });
 
  
-
  // Fetch user-specific data from Google Sheets
  function fetchSheetData() {
-     const sheetId = '1-Appfrc9S7RzJZO5aq4oxn73FtaOregvL3vOzpGJf6M'; // Your Google Sheet ID
-     const apiKey = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0'; // Your API key
      const loggedInUser = localStorage.getItem('username'); // Get the logged-in user's username
-
      const sheetRanges = [`${loggedInUser}!A1:AL`]; // Ensure the username is the correct sheet name
      const rangesQuery = sheetRanges.map(range => `ranges=${encodeURIComponent(range)}`).join('&');
 
-     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values:batchGet?${rangesQuery}&key=${apiKey}`;
+     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values:batchGet?${rangesQuery}&key=${API_KEY}`;
 
      fetch(url)
          .then(response => {
@@ -125,18 +168,20 @@ function displayUserData(data) {
     const tableContainer = document.getElementById('table-container');
     tableContainer.innerHTML = ''; // Clear previous content
 
-    // Add table headers
     const headers = data[0];
-    let tableHtml = `<table border="1"><thead><tr>${headers.map(header => `<th>${header}</th>`).join('')}<th>Actions</th></tr></thead><tbody>`;
+    let tableHtml = `<table border="1"><thead><tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr></thead><tbody>`;
 
-    // Add data rows with "Edit" and "See Details" buttons
     data.slice(1).forEach((row, index) => {
         const rowId = index + 2; // Row ID for reference
-        tableHtml += `<tr data-row-id="${rowId}">${row.map(cell => `<td>${cell || ''}</td>`).join('')}
-            <td>
-                <button onclick="editRow(this)">Edit</button>
-                <button onclick="viewDetails(${rowId})">Detail</button>
-            </td>
+        tableHtml += `<tr data-row-id="${rowId}">
+            ${row.map((cell, cellIndex) => {
+                // Assuming "Name" is the first column (index 0)
+                if (cellIndex === 0) {
+                    return `<td><button id="Nama-detail" class="Nama-detail" onclick="showActionButtons(${rowId})">${cell || ''}</button></td>`;
+                } else {
+                    return `<td>${cell || ''}</td>`;
+                }
+            }).join('')}
         </tr>`;
     });
 
@@ -144,13 +189,36 @@ function displayUserData(data) {
     tableContainer.innerHTML = tableHtml;
 }
 
-function editRow(button) {
-    const row = button.closest('tr');
+function showActionButtons(rowId) {
+    const actionButtons = document.getElementById('action-buttons');
+    actionButtons.style.display = 'block';
+    
+    // Save the selected rowId for use in editRow and viewDetails functions
+    actionButtons.setAttribute('data-row-id', rowId);
+    
+    // Remove 'selected-name' class from any previously selected cell
+    const previouslySelected = document.querySelector('.selected-name');
+    if (previouslySelected) {
+        previouslySelected.classList.remove('selected-name');
+    }
+    
+    // Add 'selected-name' class to the newly selected Name cell
+    const nameCell = document.querySelector(`tr[data-row-id="${rowId}"] td:first-child`);
+    if (nameCell) {
+        nameCell.classList.add('selected-name');
+    }
+}
+
+
+function editRow() {
+    // Get the rowId from the action buttons container
+    const rowId = document.getElementById('action-buttons').getAttribute('data-row-id');
+
+    // Use rowId to locate the target row
+    const row = document.querySelector(`tr[data-row-id="${rowId}"]`);
     const cells = row.querySelectorAll('td');
 
-    // Ambil Row ID dari atribut data-row-id
-    const rowId = row.getAttribute('data-row-id');
-    document.getElementById('row-id').value = rowId; // Set Row ID di input hidden
+    document.getElementById('row-id').value = rowId; // Set Row ID in hidden input
 
     const formElements = [
         { id: 'name', cellIndex: 0 },
@@ -213,9 +281,8 @@ function editRow(button) {
     });
 
     // Tampilkan form dan sembunyikan tampilan data
-    document.getElementById('data-view-container').style.display = 'none';
-    document.getElementById('form-container').style.display = 'block';
-
+    toggleVisibility(formContainer,dataViewContainer)
+    
     // Ubah teks tombol submit menjadi "Update"
     const submitButton = document.getElementById('submit-button');
     submitButton.value = "Update";
@@ -237,11 +304,14 @@ function editRow(button) {
 
  // Back button for data view
  document.getElementById('back-to-data-btn').addEventListener('click', function() {
-     document.getElementById('data-view-container').style.display = 'none'; 
-     document.getElementById('menu-container').style.display = 'block'; 
+    toggleVisibility(menuContainer,dataViewContainer)
  });
 
-function viewDetails(rowId) {
+ function viewDetails() {
+    // Retrieve the rowId from the action buttons container
+    const rowId = document.getElementById('action-buttons').getAttribute('data-row-id');
+    
+    // Use rowId to locate the target row
     const row = document.querySelector(`tr[data-row-id="${rowId}"]`);
     const cells = row.querySelectorAll('td');
 
@@ -263,19 +333,229 @@ function viewDetails(rowId) {
     document.getElementById('summary-sisa-cicilan').textContent = cells[37]?.textContent || '-';
 
     // Show the payment summary section and hide other sections
-    document.getElementById('data-view-container').style.display = 'none';
-    document.getElementById('payment-summary-container').style.display = 'block';
+    toggleVisibility(paymentSummaryContainer,dataViewContainer)
 }
 
 document.getElementById('back-to-data-btn').addEventListener('click', function() {
-    document.getElementById('data-view-container').style.display = 'none';
-    document.getElementById('menu-container').style.display = 'block';
+    toggleVisibility(menuContainer,dataViewContainer)
 });
 
 document.getElementById('back-to-menu-from-summary-btn').addEventListener('click', function() {
-    document.getElementById('payment-summary-container').style.display = 'none';
-    document.getElementById('menu-container').style.display = 'block';
+    toggleVisibility(menuContainer,paymentSummaryContainer)
 });
+
+// Toggle visibility for Laporan Bulananku menu
+document.getElementById('monthly-report-btn').addEventListener('click', function() {
+    toggleVisibility(monthlyReportContainer, menuContainer);
+    // Don't call loadReportByMonth here unless you intend for it to load immediately
+});
+
+document.getElementById('back-to-menu-from-report-btn').addEventListener('click', function() {
+    toggleVisibility(menuContainer,monthlyReportContainer)
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const startYear = 2022;
+    const endYear = 2040;
+    const currentYear = new Date().getFullYear();
+
+    // Populate years for Monthly Report
+    const yearSelectMonthly = document.getElementById('select-year-monthly');
+    for (let year = startYear; year <= endYear; year++) {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearSelectMonthly.appendChild(option);
+    }
+    if (currentYear >= startYear && currentYear <= endYear) {
+        yearSelectMonthly.value = currentYear;
+    } else {
+        yearSelectMonthly.value = startYear;
+    }
+
+    // Populate years for All Sales Monthly Report
+    const yearSelectAllSales = document.getElementById('select-year-allsales');
+    for (let year = startYear; year <= endYear; year++) {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearSelectAllSales.appendChild(option);
+    }
+    if (currentYear >= startYear && currentYear <= endYear) {
+        yearSelectAllSales.value = currentYear;
+    } else {
+        yearSelectAllSales.value = startYear;
+    }
+});
+
+
+// Function to load the monthly report from Google Apps Script
+function loadReportByMonth() {
+    const bulan = document.getElementById('select-month-monthly').value;
+    const tahun = document.getElementById('select-year-monthly').value;
+
+    if (!bulan || !tahun) {
+        alert("Silakan pilih bulan dan tahun.");
+        return;
+    }
+
+    const username = localStorage.getItem('username');
+    fetch(`${KODE_UTAMA}?bulan=${bulan}&tahun=${tahun}&username=${username}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.laporan) {
+                displayReportData(data.laporan); // Display the data in the table
+            } else {
+                alert("Data laporan tidak ditemukan.");
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching monthly report:', error);
+            alert("Error saat memuat laporan.");
+        });
+}
+
+// Function to display report data in HTML table
+function displayReportData(laporan) {
+    const tableBody = document.getElementById('report-table-body');
+    tableBody.innerHTML = ''; // Clear previous content
+
+    let totalOmset = 0;
+    let totalKacamata = 0;
+
+    laporan.forEach((item, index) => {
+        const row = `<tr>
+            <td>${index + 1}</td>
+            <td>${item.namaPelanggan}</td>
+            <td>${item.alamat}</td>
+            <td>${item.tanggalTransaksi}</td>
+            <td>${item.jumlahKacamata}</td>
+            <td>Rp${item.jumlahUang.toLocaleString()}</td>
+        </tr>`;
+        tableBody.insertAdjacentHTML('beforeend', row);
+        
+        // Tambahkan ke total omset dan jumlah kacamata
+        totalOmset += item.jumlahUang;
+        totalKacamata += item.jumlahKacamata;
+    });
+
+    // Display total omset and total kacamata in the footer
+    document.getElementById('total-omset').textContent = 'Rp' + totalOmset.toLocaleString();
+    document.getElementById('total-kacamata').textContent = totalKacamata;
+}
+
+// Fungsi untuk memuat laporan bulanan semua sales
+function loadAllSalesMonthlyReport() {
+    const bulan = document.getElementById('select-month-allsales').value;
+    const tahun = document.getElementById('select-year-allsales').value;
+
+    fetch(`${KODE_UTAMA}?bulan=${bulan}&tahun=${tahun}&semuaSales=true`)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.laporan) {
+                laporanSemuaSales = data.laporan;
+                displayAllSalesReportData(laporanSemuaSales);
+            } else {
+                alert("Data laporan tidak ditemukan.");
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching all sales monthly report:', error);
+            alert("Error saat memuat laporan bulanan semua sales.");
+        });
+}
+
+document.getElementById('back-to-menu-from-semua-sales-btn').addEventListener('click', function() {
+    toggleVisibility(menuContainer,semuaSalesContainer)
+});
+
+// Fungsi untuk menampilkan data laporan semua sales di HTML table
+function displayAllSalesReportData(laporanSemuaSales) {
+    const tableBody = document.getElementById('semua-sales-table-body');
+    tableBody.innerHTML = ''; // Clear previous content
+
+    let totalOmset = 0;
+    let totalKacamata = 0;
+
+    laporanSemuaSales.forEach((salesReport, index) => {
+        const jumlahKacamata = salesReport.jumlahKacamata || 0;
+        const jumlahUang = salesReport.jumlahUang || 0;
+
+        const row = `<tr>
+            <td>${index + 1}</td>
+            <td><button onclick="showSalespersonDetails('${index}')">${salesReport.sales}</button></td>
+            <td>${salesReport.laporan.length} transactions</td>
+            <td>${jumlahKacamata}</td>
+            <td>Rp${jumlahUang.toLocaleString()}</td>
+        </tr>`;
+        tableBody.insertAdjacentHTML('beforeend', row);
+
+        // Accumulate totals
+        totalOmset += jumlahUang;
+        totalKacamata += jumlahKacamata;
+    });
+
+    // Update the total elements in the footer
+    document.getElementById('total-omset-semua').textContent = 'Rp' + totalOmset.toLocaleString();
+    document.getElementById('total-kacamata-semua').textContent = totalKacamata;
+}
+
+
+document.getElementById('all-sales-report-btn').addEventListener('click', function() {
+    toggleVisibility(semuaSalesContainer, menuContainer);
+});
+
+function showSalespersonDetails(salespersonIndex) {
+    const selectedSalesperson = laporanSemuaSales[salespersonIndex];
+    const tableBody = document.getElementById('report-table-body');
+    tableBody.innerHTML = ''; // Clear previous content
+
+    selectedSalesperson.laporan.forEach((transaction, index) => {
+        const row = `<tr>
+            <td>${index + 1}</td>
+            <td>${transaction.namaPelanggan}</td>
+            <td>${transaction.alamat}</td>
+            <td>${transaction.tanggalTransaksi}</td>
+            <td>${transaction.jumlahKacamata}</td>
+            <td>Rp${transaction.jumlahUang.toLocaleString()}</td>
+        </tr>`;
+        tableBody.insertAdjacentHTML('beforeend', row);
+    });
+
+    // Toggle the visibility to show details
+    toggleVisibility(document.getElementById('monthly-report-container'), document.getElementById('semua-sales-container'));
+}
+
+window.addEventListener('popstate', function (event) {
+    // Periksa elemen yang sedang aktif untuk menentukan ke mana Back harus membawa pengguna
+    if (dataViewContainer.style.display === 'block') {
+        // Jika sedang di data view, kembalikan ke menu utama
+        toggleVisibility(menuContainer, dataViewContainer);
+    } else if (formContainer.style.display === 'block') {
+        // Jika sedang di form, kembali ke menu utama
+        toggleVisibility(menuContainer, formContainer);
+    } else if (monthlyReportContainer.style.display === 'block') {
+        // Jika sedang di laporan bulanan, kembali ke menu utama
+        toggleVisibility(menuContainer, monthlyReportContainer);
+    } else if (semuaSalesContainer.style.display === 'block') {
+        // Jika sedang di laporan semua sales, kembali ke menu utama
+        toggleVisibility(menuContainer, semuaSalesContainer);
+    } else if (paymentSummaryContainer.style.display === 'block') {
+        // Jika sedang di rincian pembayaran, kembali ke menu utama
+        toggleVisibility(menuContainer, paymentSummaryContainer);
+    } else {
+        // Jika tidak ada konteks yang sesuai, kembali ke tampilan login atau keluar dari aplikasi
+        toggleVisibility(loginContainer, menuContainer);
+    }
+});
+
+// Fungsi untuk menambahkan state ke riwayat browser saat beralih halaman
+function navigateToSection(showElement, hideElement) {
+    toggleVisibility(showElement, hideElement);
+    history.pushState(null, null, location.href); // Tambah riwayat baru tanpa reload halaman
+}
+
+// Pastikan menggunakan navigateToSection() daripada toggleVisibility() biasa saat berpindah halaman
 
 
  // Toggle Password Visibility
@@ -284,44 +564,42 @@ document.getElementById('back-to-menu-from-summary-btn').addEventListener('click
      passwordInput.type = this.checked ? 'text' : 'password';
  });
 
- let logoutTimer;
- const inactivityLimit = 10 * 60 * 1000; // Set inactivity limit to 10 minutes
+ // Declare logoutTimer at the top of the script
+let logoutTimer;
 
- // Reset the inactivity timer
- function resetTimer() {
-     clearTimeout(logoutTimer);  // Clear the previous timer
-     logoutTimer = setTimeout(logout, inactivityLimit);  // Reset the timer
- }
+// Function to reset the inactivity timer
+function resetTimer() {
+    clearTimeout(logoutTimer);  // Clear the previous timer
+    logoutTimer = setTimeout(logout, inactivityLimit);  // Reset the timer
+}
 
- // Logout due to inactivity
- function logout() {
+// Inactivity limit in milliseconds (e.g., 10 minutes)
+const inactivityLimit = 10 * 60 * 1000; // Set inactivity limit to 10 minutes
+
+// Function to handle logout due to inactivity
+function logout() {
     localStorage.removeItem('loggedIn');
     localStorage.removeItem('username');
-    toggleVisibility(loginContainer, formContainer); // Use toggleVisibility
+    toggleVisibility(loginContainer, formContainer); // Show login form
     toggleVisibility(loginContainer, menuContainer);
     alert('You have been logged out due to inactivity.');
 }
 
+// Start the inactivity timer if the user is logged in
+if (localStorage.getItem('loggedIn') === 'true') {
+    resetTimer();  // Start the inactivity timer
+}
 
- // Start inactivity timer if logged in
- if (localStorage.getItem('loggedIn') === 'true') {
-     resetTimer();  // Start the inactivity timer
- }
+// Listen for user activity to reset the timer
+window.addEventListener('mousemove', resetTimer);
+window.addEventListener('keypress', resetTimer);
+window.addEventListener('click', resetTimer);
+window.addEventListener('touchstart', resetTimer);  // For mobile users
 
- // Listen for user activity
- window.addEventListener('mousemove', resetTimer);
- window.addEventListener('keypress', resetTimer);
- window.addEventListener('click', resetTimer);
- window.addEventListener('touchstart', resetTimer);  // For mobile users
- // Automatically log out if the user is already logged in but inactive
- if (localStorage.getItem('loggedIn') === 'true') {
-     resetTimer();  // Start the inactivity timer
- }
 
  // Automatically show the form if the user is already logged in
  if (localStorage.getItem('loggedIn') === 'true') {
-     document.getElementById('login-container').style.display = 'none';
-     document.getElementById('form-container').style.display = 'block';
+    toggleVisibility(formContainer,loginContainer)
   }
  //biar balik nggulung
  document.addEventListener('DOMContentLoaded', function () {
@@ -404,10 +682,8 @@ radioButtons.forEach(button => {
     });
 });
 
-
- document.getElementById('back-to-menu-btn').addEventListener('click', function() {
-     document.getElementById('menu-container').style.display = 'block'; 
-     document.getElementById('form-container').style.display = 'none'; 
+document.getElementById('back-to-menu-btn').addEventListener('click', function() {
+    toggleVisibility(menuContainer,formContainer)
  });
 
      document.addEventListener('DOMContentLoaded', function() {
@@ -422,9 +698,7 @@ radioButtons.forEach(button => {
          } else {
              tableContainer.style.overflowX = 'hidden'; // Hide scroll if no overflow
          }
-     } else {
-         console.error('Table not found in the container.'); // Log error if table is null
-     }
+     } 
  });
 
  // Also, make sure to attach the resize event to adjust on window size change
@@ -454,20 +728,8 @@ function calculateHargaAkhir() {
     document.getElementById('harga-akhir').value = hargaAkhir;
 }
 
- if ('serviceWorker' in navigator) {
-     window.addEventListener('load', () => {
-     navigator.serviceWorker.register('/service-worker.js')
-         .then((registration) => {
-         console.log('ServiceWorker registered: ', registration);
-         })
-         .catch((registrationError) => {
-         console.log('ServiceWorker registration failed: ', registrationError);
-         });
-     });
- }
-
-  // Event listener untuk tombol reset
-document.getElementById('reset-form-btn').addEventListener('click', function() {
+ // Event listener untuk tombol reset
+ document.getElementById('reset-form-btn').addEventListener('click', function() {
     // Ambil semua elemen input dan textarea di form
     const formElements = document.querySelectorAll('#form input, #form textarea');
 
@@ -484,6 +746,54 @@ document.getElementById('reset-form-btn').addEventListener('click', function() {
     const submitButton = document.getElementById('submit-button');
     submitButton.value = "Kirim";
     submitButton.removeAttribute("data-mode"); // Hapus penanda mode edit
-});
+});                    
 
-                                         
+
+// Handle service worker updates
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+        .then(registration => {
+            // Check for updates every 5 minutes
+            setInterval(() => {
+                registration.update();
+            }, 5 * 60 * 1000);
+
+            // Listen for new service worker installation
+            registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        // New version available, trigger refresh
+                        if (!refreshing) {
+                            refreshing = true;
+                            // Save any important state/data here if needed
+                            window.location.reload();
+                        }
+                    }
+                });
+            });
+        });
+
+    // Listen for messages from service worker
+    navigator.serviceWorker.addEventListener('message', event => {
+        if (event.data.type === 'UPDATE_AVAILABLE') {
+            console.log(`New version ${event.data.version} is available`);
+            if (!refreshing) {
+                refreshing = true;
+                // Save any important form data or state here
+                window.location.reload();
+            }
+        }
+    });
+
+    // Handle reload behavior
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+            refreshing = true;
+            window.location.reload();
+        }
+    });
+}
+
+ 
