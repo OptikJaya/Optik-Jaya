@@ -1,4 +1,5 @@
-const CACHE_NAME = 'optik-jaya-cache-v1';
+const CACHE_NAME = 'optik-jaya-cache-v2.0.0';
+const VERSION = '2.0.0'; // Add version tracking
 const urlsToCache = [
     './',
     './index.html',
@@ -21,29 +22,60 @@ self.addEventListener('install', event => {
     self.skipWaiting(); // Force new service worker to activate immediately
 });
 
-// Fetch resources
+// Add message handling for version checking
+self.addEventListener('message', event => {
+    if (event.data.type === 'GET_VERSION') {
+        event.ports[0].postMessage(VERSION);
+    }
+});
+
+// Enhanced fetch with network-first strategy and automatic update
 self.addEventListener('fetch', event => {
     event.respondWith(
-        caches.match(event.request)
+        fetch(event.request)
             .then(response => {
-                return response || fetch(event.request);
+                // Clone the response because it can only be consumed once
+                const responseToCache = response.clone();
+                
+                // Update the cache with the new response
+                caches.open(CACHE_NAME)
+                    .then(cache => {
+                        cache.put(event.request, responseToCache);
+                    });
+
+                return response;
+            })
+            .catch(() => {
+                // If network request fails, try to get from cache
+                return caches.match(event.request);
             })
     );
 });
 
-// Update the service worker and delete old caches if any
-self.addEventListener('activate', (event) => {
-    const cacheWhitelist = [CACHE_NAME];
+// Cleanup old caches and notify clients of updates
+self.addEventListener('activate', event => {
     event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cacheName) => {
-                    if (!cacheWhitelist.includes(cacheName)) {
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
-        })
+        Promise.all([
+            // Clean up old caches
+            caches.keys().then(cacheNames => {
+                return Promise.all(
+                    cacheNames.map(cacheName => {
+                        if (cacheName !== CACHE_NAME) {
+                            return caches.delete(cacheName);
+                        }
+                    })
+                );
+            }),
+            // Notify all clients about the update
+            clients.matchAll().then(clients => {
+                clients.forEach(client => {
+                    client.postMessage({
+                        type: 'UPDATE_AVAILABLE',
+                        version: VERSION
+                    });
+                });
+            })
+        ])
     );
-    clients.claim(); // Take control of all open clients immediately
+    clients.claim(); // Take control of all open clients
 });
