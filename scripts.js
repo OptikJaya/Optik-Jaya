@@ -19,7 +19,7 @@ const semuaSalesContainer = document.getElementById('semua-sales-container')
 // Constants
 const SHEET_ID = '1-Appfrc9S7RzJZO5aq4oxn73FtaOregvL3vOzpGJf6M';
 const API_KEY = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0';
-const KODE_UTAMA = 'https://script.google.com/macros/s/AKfycbzkirki7_2rU4NfrzxauVSz9UTCOgCU0uGRWFvudWNQ6LqNwVJFeTd3N2GBogw072H8/exec';
+const KODE_UTAMA = 'https://script.google.com/macros/s/AKfycbzoVbKjpxqTO0bkZ3BQ35mCho0wWzbpaLZf9FSnCDBQ7A7wlRRoFqSQoGp8AdazOeQE/exec';
 
 
 function toggleVisibility(showElement, hideElement) {
@@ -187,6 +187,8 @@ function displayUserData(data) {
 
     tableHtml += '</tbody></table>';
     tableContainer.innerHTML = tableHtml;
+
+    makeTableSortable('table-container');
 }
 
 function showActionButtons(rowId) {
@@ -228,7 +230,7 @@ function editRow() {
         { id: 'Status Pelanggan', cellIndex: 4, type: 'radio' },
         { id: 'coordinates', cellIndex: 5 },
         { id: 'lensa', cellIndex: 6, type: 'radio' },
-        { id: 'frame', cellIndex: 7 },
+        { id: 'frame', cellIndex: 7, type: 'radio' },
         { id: 'harga-awal', cellIndex: 8 },
         { id: 'harga-tt', cellIndex: 9 },
         { id: 'harga-akhir', cellIndex: 10 },
@@ -400,6 +402,10 @@ function loadReportByMonth() {
     }
 
     const username = localStorage.getItem('username');
+
+    // Tampilkan loading
+    showLoading('loading-monthly-report');
+
     fetch(`${KODE_UTAMA}?bulan=${bulan}&tahun=${tahun}&username=${username}`)
         .then(response => response.json())
         .then(data => {
@@ -412,6 +418,10 @@ function loadReportByMonth() {
         .catch(error => {
             console.error('Error fetching monthly report:', error);
             alert("Error saat memuat laporan.");
+        })
+        .finally(() => {
+            // Sembunyikan loading
+            hideLoading('loading-monthly-report');
         });
 }
 
@@ -442,12 +452,17 @@ function displayReportData(laporan) {
     // Display total omset and total kacamata in the footer
     document.getElementById('total-omset').textContent = 'Rp' + totalOmset.toLocaleString();
     document.getElementById('total-kacamata').textContent = totalKacamata;
+
+    makeTableSortable('monthly-report-container');
 }
 
 // Fungsi untuk memuat laporan bulanan semua sales
 function loadAllSalesMonthlyReport() {
     const bulan = document.getElementById('select-month-allsales').value;
     const tahun = document.getElementById('select-year-allsales').value;
+
+    // Tampilkan loading
+    showLoading('loading-all-sales-report');
 
     fetch(`${KODE_UTAMA}?bulan=${bulan}&tahun=${tahun}&semuaSales=true`)
         .then(response => response.json())
@@ -462,6 +477,10 @@ function loadAllSalesMonthlyReport() {
         .catch(error => {
             console.error('Error fetching all sales monthly report:', error);
             alert("Error saat memuat laporan bulanan semua sales.");
+        })
+        .finally(() => {
+            // Sembunyikan loading
+            hideLoading('loading-all-sales-report');
         });
 }
 
@@ -555,7 +574,74 @@ function navigateToSection(showElement, hideElement) {
     history.pushState(null, null, location.href); // Tambah riwayat baru tanpa reload halaman
 }
 
-// Pastikan menggunakan navigateToSection() daripada toggleVisibility() biasa saat berpindah halaman
+function makeTableSortable(tableContainerId) {
+    const tableContainer = document.getElementById(tableContainerId);
+    if (!tableContainer) return;
+
+    const table = tableContainer.querySelector('table');
+    if (!table) return;
+
+    const headers = table.querySelectorAll('thead th');
+    const sortDirections = Array(headers.length).fill(null); // Track sorting state for each column
+
+    headers.forEach((header, columnIndex) => {
+        header.style.cursor = 'pointer';
+        header.addEventListener('click', () => {
+            // Toggle sort direction
+            const currentDirection = sortDirections[columnIndex];
+            const newDirection = currentDirection === 'asc' ? 'desc' : 'asc';
+            sortDirections[columnIndex] = newDirection;
+
+            // Sort table
+            sortTable(table, columnIndex, newDirection);
+
+            // Tambahkan panah untuk menunjukkan arah sort
+            headers.forEach(h => h.textContent = h.textContent.replace(/ ↑| ↓/g, '')); // Hapus panah dari header lain
+            header.textContent += newDirection === 'asc' ? ' ↑' : ' ↓'; // Tambahkan panah baru
+        });
+    });
+}
+
+function sortTable(table, columnIndex, direction = 'asc') {
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+
+    const isNumeric = !isNaN(parseFloat(rows[0].cells[columnIndex]?.textContent || ''));
+
+    const sortedRows = rows.sort((rowA, rowB) => {
+        const cellA = rowA.cells[columnIndex]?.textContent.trim() || '';
+        const cellB = rowB.cells[columnIndex]?.textContent.trim() || '';
+
+        const comparison = isNumeric
+            ? parseFloat(cellA) - parseFloat(cellB)
+            : cellA.localeCompare(cellB);
+
+        return direction === 'asc' ? comparison : -comparison;
+    });
+
+    sortedRows.forEach(row => tbody.appendChild(row));
+
+    // Tambahkan kelas sorted ke header yang di-sort
+    const headers = table.querySelectorAll('thead th');
+    headers.forEach(h => h.classList.remove('sorted-asc', 'sorted-desc'));
+    headers[columnIndex].classList.add(direction === 'asc' ? 'sorted-asc' : 'sorted-desc');
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    makeTableSortable('semua-sales-container'); // For Semua Sales table
+});
+
+function showLoading(containerId) {
+    const loadingElement = document.getElementById(containerId);
+    loadingElement.style.display = 'flex'; // Menampilkan loading
+}
+
+function hideLoading(containerId) {
+    const loadingElement = document.getElementById(containerId);
+    loadingElement.style.display = 'none'; // Menyembunyikan loading
+}
+
 
 
  // Toggle Password Visibility
@@ -667,20 +753,30 @@ function submitForm(event) {
     });
 }
 
-function toggleOtherInput() {
-    const otherInput = document.getElementById('lensa-other-text');
-    otherInput.style.display = 'block';
+function toggleOtherInput(inputName, otherInputId) {
+    const radioButtons = document.querySelectorAll(`input[name="${inputName}"]`);
+    const otherInput = document.getElementById(otherInputId);
+
+    radioButtons.forEach(button => {
+        button.addEventListener('change', function() {
+            if (this.value === 'Other') {
+                otherInput.style.display = 'block';
+                otherInput.addEventListener('input', () => {
+                    this.value = otherInput.value; // Update the radio button's value dynamically
+                });
+            } else {
+                otherInput.style.display = 'none';
+                otherInput.value = ''; // Clear the text field when another option is selected
+            }
+        });
+    });
 }
 
-// Optional: Add a function to hide the other input if another radio is selected
-const radioButtons = document.querySelectorAll('input[name="lensa"]');
-radioButtons.forEach(button => {
-    button.addEventListener('change', function() {
-        if (this.value !== 'Other') {
-            document.getElementById('lensa-other-text').style.display = 'none';
-        }
-    });
-});
+// Initialize the toggle functionality for "lensa" and "frame"
+toggleOtherInput('lensa', 'lensa-other-text');
+toggleOtherInput('frame', 'frame-other-text');
+
+
 
 document.getElementById('back-to-menu-btn').addEventListener('click', function() {
     toggleVisibility(menuContainer,formContainer)
@@ -795,5 +891,3 @@ if ('serviceWorker' in navigator) {
         }
     });
 }
-
- 
