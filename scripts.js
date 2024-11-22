@@ -19,7 +19,7 @@ const semuaSalesContainer = document.getElementById('semua-sales-container')
 // Constants
 const SHEET_ID = '1-Appfrc9S7RzJZO5aq4oxn73FtaOregvL3vOzpGJf6M';
 const API_KEY = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0';
-const KODE_UTAMA = 'https://script.google.com/macros/s/AKfycbwkiuNPL1PD5yYAvfJyVW-3FjaZ57Wwqo-efJxpcFMP5weGGvCRCxj1VWLyLF0QIo9t/exec';
+const KODE_UTAMA = 'https://script.google.com/macros/s/AKfycbyC1E-bzP37mnO41OqkkMuseFXDH6A6ZPEkLxJWqA7Gh1bDdZsDymSU8sx2XsnPy_fc/exec';
 
 
 function toggleVisibility(showElement, hideElement) {
@@ -211,14 +211,16 @@ function showActionButtons(rowId) {
     }
 }
 
-
 function editRow() {
-    // Get the rowId from the action buttons container
     const rowId = document.getElementById('action-buttons').getAttribute('data-row-id');
-
-    // Use rowId to locate the target row
     const row = document.querySelector(`tr[data-row-id="${rowId}"]`);
     const cells = row.querySelectorAll('td');
+
+    const rowData = {
+        lensa: cells[6]?.textContent || '', // Assuming column 6 is "Lensa"
+        frame: cells[7]?.textContent || '', // Assuming column 7 is "Frame"
+    };
+    
 
     document.getElementById('row-id').value = rowId; // Set Row ID in hidden input
 
@@ -262,7 +264,6 @@ function editRow() {
         { id: 'stok lensa', cellIndex: 36, type: 'radio' }
     ];
 
-    // Loop untuk mengisi form dan menambahkan atribut readOnly
     formElements.forEach(({ id, cellIndex, type }) => {
         const cellValue = cells[cellIndex]?.textContent || '';
         
@@ -282,13 +283,71 @@ function editRow() {
         }
     });
 
-    // Tampilkan form dan sembunyikan tampilan data
-    toggleVisibility(formContainer,dataViewContainer)
+    fillFormWithData(rowData);
     
-    // Ubah teks tombol submit menjadi "Update"
+    toggleVisibility(formContainer, dataViewContainer);
+
     const submitButton = document.getElementById('submit-button');
     submitButton.value = "Update";
-    submitButton.setAttribute("data-mode", "edit"); // Tandai mode edit
+    submitButton.setAttribute("data-mode", "edit");
+}
+
+
+function toggleOtherInput(inputName, otherInputId) {
+    const radioButtons = document.querySelectorAll(`input[name="${inputName}"]`);
+    const otherInput = document.getElementById(otherInputId);
+
+    radioButtons.forEach(button => {
+        button.addEventListener('change', function () {
+            if (this.value === 'Other') {
+                otherInput.style.display = 'block';
+                otherInput.readOnly = false; // Make it editable
+            } else {
+                otherInput.style.display = 'none';
+                otherInput.value = ''; // Clear the input field
+                otherInput.readOnly = true; // Ensure it's read-only
+            }
+        });
+    });
+}
+
+function populateRadioWithOther(dataValue, radioGroupName, otherInputId) {
+    const radioButtons = document.querySelectorAll(`input[name="${radioGroupName}"]`);
+    const otherInput = document.getElementById(otherInputId);
+
+    let radioMatched = false;
+
+    // Check if the value matches any of the predefined radio options
+    radioButtons.forEach(button => {
+        if (button.value === dataValue) {
+            button.checked = true;
+            radioMatched = true;
+            otherInput.style.display = 'none'; // Hide the text field
+            otherInput.value = ''; // Clear the text field
+            otherInput.readOnly = true;
+        }
+    });
+
+    // If no match, assume it's "Other"
+    if (!radioMatched && dataValue) {
+        const otherRadio = document.querySelector(`input[name="${radioGroupName}"][value="Other"]`);
+        if (otherRadio) {
+            otherRadio.checked = true;
+        }
+        otherInput.style.display = 'block'; // Show the text field
+        otherInput.value = dataValue; // Populate with the fetched value
+        otherInput.readOnly = true; // Set as read-only if required
+    }
+}
+
+// Initialize toggle functionality for "lensa" and "frame"
+toggleOtherInput('lensa', 'lensa-other-text');
+toggleOtherInput('frame', 'frame-other-text');
+
+function fillFormWithData(data) {
+    // Populate radio buttons and handle "Other" inputs
+    populateRadioWithOther(data.lensa, 'lensa', 'lensa-other-text');
+    populateRadioWithOther(data.frame, 'frame', 'frame-other-text');
 }
 
  // Search function
@@ -606,26 +665,35 @@ function sortTable(table, columnIndex, direction = 'asc') {
     const tbody = table.querySelector('tbody');
     const rows = Array.from(tbody.querySelectorAll('tr'));
 
-    const isNumeric = !isNaN(parseFloat(rows[0].cells[columnIndex]?.textContent || ''));
+    const isDateColumn = rows[0]?.cells[columnIndex]?.textContent.match(/^\d{4}-\d{2}-\d{2}$/);
 
     const sortedRows = rows.sort((rowA, rowB) => {
         const cellA = rowA.cells[columnIndex]?.textContent.trim() || '';
         const cellB = rowB.cells[columnIndex]?.textContent.trim() || '';
 
-        const comparison = isNumeric
-            ? parseFloat(cellA) - parseFloat(cellB)
-            : cellA.localeCompare(cellB);
+        let comparison;
+        if (isDateColumn) {
+            // Convert strings to date objects
+            const dateA = new Date(cellA);
+            const dateB = new Date(cellB);
+            comparison = dateA - dateB;
+        } else {
+            // General sorting for text/numeric columns
+            const isNumeric = !isNaN(parseFloat(cellA)) && !isNaN(parseFloat(cellB));
+            comparison = isNumeric ? parseFloat(cellA) - parseFloat(cellB) : cellA.localeCompare(cellB);
+        }
 
         return direction === 'asc' ? comparison : -comparison;
     });
 
     sortedRows.forEach(row => tbody.appendChild(row));
 
-    // Tambahkan kelas sorted ke header yang di-sort
+    // Add sorted class to header
     const headers = table.querySelectorAll('thead th');
     headers.forEach(h => h.classList.remove('sorted-asc', 'sorted-desc'));
     headers[columnIndex].classList.add(direction === 'asc' ? 'sorted-asc' : 'sorted-desc');
 }
+
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -753,31 +821,6 @@ function submitForm(event) {
     });
 }
 
-function toggleOtherInput(inputName, otherInputId) {
-    const radioButtons = document.querySelectorAll(`input[name="${inputName}"]`);
-    const otherInput = document.getElementById(otherInputId);
-
-    radioButtons.forEach(button => {
-        button.addEventListener('change', function() {
-            if (this.value === 'Other') {
-                otherInput.style.display = 'block';
-                otherInput.addEventListener('input', () => {
-                    this.value = otherInput.value; // Update the radio button's value dynamically
-                });
-            } else {
-                otherInput.style.display = 'none';
-                otherInput.value = ''; // Clear the text field when another option is selected
-            }
-        });
-    });
-}
-
-// Initialize the toggle functionality for "lensa" and "frame"
-toggleOtherInput('lensa', 'lensa-other-text');
-toggleOtherInput('frame', 'frame-other-text');
-
-
-
 document.getElementById('back-to-menu-btn').addEventListener('click', function() {
     toggleVisibility(menuContainer,formContainer)
  });
@@ -825,14 +868,31 @@ function calculateHargaAkhir() {
 }
 
  // Event listener untuk tombol reset
- document.getElementById('reset-form-btn').addEventListener('click', function() {
+document.getElementById('reset-form-btn').addEventListener('click', function() {
     // Ambil semua elemen input dan textarea di form
     const formElements = document.querySelectorAll('#form input, #form textarea');
 
     // Loop melalui setiap elemen dan hapus properti readOnly
     formElements.forEach(element => {
-        element.readOnly = false; // Hapus readOnly
-        element.disabled = false; // Pastikan radio buttons juga dapat di-edit kembali
+        element.readOnly = false; // Enable input
+        element.disabled = false; // Re-enable radio buttons
+    });
+    
+    // Remove the read-only class from radios
+    document.querySelectorAll('.read-only').forEach(radio => {
+        radio.classList.remove('read-only');
+    });
+
+    // Reset "Other" input fields
+    document.querySelectorAll('.other-input').forEach(input => {
+        input.style.display = 'none'; // Hide the "Other" input field
+        input.value = ''; // Clear the input value
+        input.readOnly = false; // Ensure "Other" fields are editable again
+    });
+
+    // Reset all radio buttons
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.checked = false; // Uncheck all radio buttons
     });
 
     // Reset form ke kondisi awal
@@ -842,7 +902,7 @@ function calculateHargaAkhir() {
     const submitButton = document.getElementById('submit-button');
     submitButton.value = "Kirim";
     submitButton.removeAttribute("data-mode"); // Hapus penanda mode edit
-});                    
+});     
 
 
 // Handle service worker updates
