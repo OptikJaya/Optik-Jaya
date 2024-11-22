@@ -23,7 +23,7 @@
             <div class="form-group">
                 <label for="password" >Kata sandi:</label>
                 <input type="password" id="password" required>
-                <input type="checkbox" id="togglePassword" class="lihat-sandi"> Lihat Sandi
+                <label for="togglePassword"> <input type="checkbox" id="togglePassword" class="lihat-sandi"> Lihat Sandi</label> 
             </div>
             
             <input type="submit" value="Login">
@@ -82,6 +82,9 @@
             <button onclick="loadReportByMonth()"class="search-btn-style">
                 <i class="fas fa-search"></i> Cari
             </button>
+            <div id="loading-monthly-report" class="loading-icon" style="display: none;">
+                <i class="fas fa-spinner fa-spin fa-3x"></i>
+            </div>
         </div>
 
         <table >
@@ -140,6 +143,9 @@
             <button onclick="loadAllSalesMonthlyReport()"class="search-btn-style">
                 <i class="fas fa-search"></i> Cari
             </button>
+            <div id="loading-all-sales-report" class="loading-icon" style="display: none;">
+                <i class="fas fa-spinner fa-spin fa-3x"></i>
+            </div>
         </div>
         <table>
             <thead>
@@ -282,7 +288,7 @@
         <img src="https://raw.githubusercontent.com/OptikJaya/Optik-Jaya/refs/heads/main/1.png" alt="Logo" class="logo">  <!-- Add your logo URL here -->
         <h2>Data Pasien</h2>
 
-        <form id="form" action="https://script.google.com/macros/s/AKfycbzkirki7_2rU4NfrzxauVSz9UTCOgCU0uGRWFvudWNQ6LqNwVJFeTd3N2GBogw072H8/exec" method="POST" onsubmit="submitForm(event)">
+        <form id="form" action="https://script.google.com/macros/s/AKfycbzoVbKjpxqTO0bkZ3BQ35mCho0wWzbpaLZf9FSnCDBQ7A7wlRRoFqSQoGp8AdazOeQE/exec" method="POST" onsubmit="submitForm(event)">
 
             <!-- Collapsible Section 1 - Data Diri Pelanggan -->
             <button type="button" class="collapsible">Data Diri Pelanggan</button>
@@ -311,7 +317,7 @@
                     <label class="label">Status Pelanggan</label>
                     <div class="radio-stok" style="display: flex; flex-direction: row;">
                       <label class="radio">
-                        <input type="radio" name="Status Pelanggan" value="Umum" /> Umum
+                        <input type="radio" name="Status Pelanggan" value="Umum" required/> Umum
                       </label>
                       <label class="radio">
                         <input type="radio" name="Status Pelanggan" value="BPJS" /> BPJS
@@ -331,7 +337,7 @@
                 <!-- Lensa field with multiple checkboxes -->
                 <div class="form-group">
                     <label for="lensa">Lensa:</label>
-                    <div class="radio-group" style="display: flex; flex-direction: column;">
+                    <div class="radio-group" style="display: flex; flex-direction: column;" required>
                         <label><input type="radio" name="lensa" value="Single - WhiteMC"> Single - WhiteMC</label><br>
                         <label><input type="radio" name="lensa" value="Single - CRMC"> Single - CRMC</label><br>
                         <label><input type="radio" name="lensa" value="Single - Photochromic"> Single - Photochromic</label><br>
@@ -347,8 +353,9 @@
                         <label><input type="radio" name="lensa" value="Progressive - Bluechromic"> Progressive - Bluechromic</label><br>
                         <label><input type="radio" name="lensa" value="Progressive - Night Drive"> Progressive - Night Drive</label><br>
                         <label><input type="radio" name="lensa" value="Progressive - Blu-ray"> Progressive - Blu-ray</label><br>
+                        <label><input type="radio" name="lensa" value="Overlense"> Overlense</label><br>
                         <label>
-                            <input type="radio" name="lensa" value="Other" id="lensa-other" onclick="toggleOtherInput()"> Other
+                            <input type="radio" name="lensa" value="Other" id="lensa-other" onclick="toggleOtherInput()"> lainnya
                         </label><br>
                         <input type="text" id="lensa-other-text" name="lensa_other_text" placeholder="Isi sendiri" style="display: none; margin-top: 5px;">
                     </div>
@@ -357,8 +364,14 @@
                 <!-- Frame field -->
                 <div class="form-group">
                     <label for="frame">Frame</label>
-                    <input type="text" id="frame" name="frame" required>
-                </div>
+                    <div class="radio-group" style="display: flex; flex-direction: column;" required>
+                        <label><input type="radio" name="frame" value="Sendiri"> Sendiri</label><br>
+                        <label>
+                            <input type="radio" name="frame" value="Other" id="frame-other" onclick="toggleFrameInput()"> Toko
+                        </label><br>
+                        <input type="text" id="frame-other-text" name="frame_other_text" placeholder="Isi sendiri" style="display: none; margin-top: 5px;">    
+                    </div>
+                </div> 
 
                 <!-- Harga Awal -->
                 <div class="form-group">
