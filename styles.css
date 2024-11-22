@@ -3,7 +3,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', Arial, sans-serif;
 }
 
 body {
@@ -614,3 +614,23 @@ th:first-child, td:first-child {
     margin-left: 4px;
     font-size: 13pt;
 }
+
+.loading-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.8); /* Background semi-transparent */
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 1000; /* Pastikan berada di atas elemen lainnya */
+}
+
+th {
+    position: relative;
+}
+
+
