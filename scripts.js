@@ -221,9 +221,9 @@ function editRow() {
         frame: cells[7]?.textContent || '', // Assuming column 7 is "Frame"
     };
     
+    fillFormWithData(rowData);
 
     document.getElementById('row-id').value = rowId; // Set Row ID in hidden input
-
     const formElements = [
         { id: 'name', cellIndex: 0 },
         { id: 'address', cellIndex: 1 },
@@ -282,8 +282,6 @@ function editRow() {
             }
         }
     });
-
-    fillFormWithData(rowData);
     
     toggleVisibility(formContainer, dataViewContainer);
 
@@ -322,10 +320,11 @@ function populateRadioWithOther(dataValue, radioGroupName, otherInputId) {
         if (button.value === dataValue) {
             button.checked = true;
             radioMatched = true;
-            otherInput.style.display = 'none'; // Hide the text field
+            otherInput.style.display = 'none'; // Hide the "Other" text field
             otherInput.value = ''; // Clear the text field
-            otherInput.readOnly = true;
+            otherInput.readOnly = true; // Ensure the text field is read-only
         }
+        button.disabled = true; // Disable all radio buttons in the group
     });
 
     // If no match, assume it's "Other"
@@ -334,9 +333,9 @@ function populateRadioWithOther(dataValue, radioGroupName, otherInputId) {
         if (otherRadio) {
             otherRadio.checked = true;
         }
-        otherInput.style.display = 'block'; // Show the text field
+        otherInput.style.display = 'block'; // Show the "Other" text field
         otherInput.value = dataValue; // Populate with the fetched value
-        otherInput.readOnly = true; // Set as read-only if required
+        otherInput.readOnly = true; // Set as read-only
     }
 }
 
