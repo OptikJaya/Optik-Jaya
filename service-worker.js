@@ -1,5 +1,5 @@
-const CACHE_NAME = 'optik-jaya-cache-v2.0.0';
-const VERSION = '2.0.0'; // Add version tracking
+const CACHE_NAME = 'optik-jaya-cache-v2.0.1';
+const VERSION = '2.0.1'; // Add version tracking
 const urlsToCache = [
     './',
     './index.html',
