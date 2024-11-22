@@ -19,7 +19,7 @@ const semuaSalesContainer = document.getElementById('semua-sales-container')
 // Constants
 const SHEET_ID = '1-Appfrc9S7RzJZO5aq4oxn73FtaOregvL3vOzpGJf6M';
 const API_KEY = 'AIzaSyCMf51O_3RxFirEV1lzzwzGZtISqnrAfB0';
-const KODE_UTAMA = 'https://script.google.com/macros/s/AKfycbzoVbKjpxqTO0bkZ3BQ35mCho0wWzbpaLZf9FSnCDBQ7A7wlRRoFqSQoGp8AdazOeQE/exec';
+const KODE_UTAMA = 'https://script.google.com/macros/s/AKfycbwkiuNPL1PD5yYAvfJyVW-3FjaZ57Wwqo-efJxpcFMP5weGGvCRCxj1VWLyLF0QIo9t/exec';
 
 
 function toggleVisibility(showElement, hideElement) {
